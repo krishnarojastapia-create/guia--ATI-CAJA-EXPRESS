@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guía de Trámites – Autoatención</title>
+  <style>
+    :root { --pad: 16px; --radius: 14px; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background:#f6f7f9; color:#111; }
+    header { padding: 18px var(--pad); background:#fff; border-bottom:1px solid #e6e8ee; position: sticky; top: 0; }
+    h1 { margin:0; font-size: 18px; }
+    main { padding: var(--pad); max-width: 760px; margin: 0 auto; }
+    .card { background:#fff; border:1px solid #e6e8ee; border-radius: var(--radius); padding: var(--pad); margin-bottom: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    label { font-weight: 600; display:block; margin-bottom: 8px; }
+    select, input { width: 100%; padding: 12px; border-radius: 12px; border:1px solid #d6dae6; font-size: 16px; background:#fff; }
+    .row { display:grid; grid-template-columns: 1fr; gap: 10px; }
+    .badge { display:inline-block; padding: 6px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; }
+    .ok { background:#e9f8ef; color:#0b6b2f; border:1px solid #bfe8cd; }
+    .warn { background:#fff4e5; color:#8a4b00; border:1px solid #ffd8a8; }
+    .no { background:#fdecec; color:#8a1f1f; border:1px solid #f6c0c0; }
+    ol { margin: 8px 0 0 20px; }
+    .muted { color:#5a6475; font-size: 13px; margin-top: 6px; }
+    .small { font-size: 12px; color:#5a6475; }
+    .btn { display:inline-flex; gap:8px; align-items:center; border:1px solid #d6dae6; padding: 10px 12px; border-radius: 12px; background:#fff; cursor:pointer; font-weight: 600; }
+    .btn:active { transform: translateY(1px); }
+    .grid2 { display:grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 640px) { .grid2 { grid-template-columns: 1fr 1fr; } }
+    .hr { height:1px; background:#eef0f5; margin: 12px 0; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Guía rápida de trámites (ATI / Caja Express)</h1>
+    <div class="small">Escanea el QR, elige tu trámite y sigue los pasos.</div>
+  </header>
+
+  <main>
+    <div class="card">
+      <div class="grid2">
+        <div>
+          <label for="tramite">¿Qué trámite quieres realizar?</label>
+          <select id="tramite"></select>
+          <div class="muted" id="desc"></div>
+        </div>
+        <div>
+          <label for="monto">Monto (solo si aplica)</label>
+          <input id="monto" type="number" inputmode="numeric" placeholder="Ej: 50000" min="0" />
+          <div class="muted">Si tu trámite no tiene monto, déjalo vacío.</div>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div id="resultado" class="card" style="margin:0; border-style:dashed;"></div>
+
+      <div class="hr"></div>
+
+      <button class="btn" id="btnShare" type="button">Compartir instrucciones</button>
+      <span class="small"> (opcional)</span>
+    </div>
+
+    <div class="card">
+      <b>Nota para la sucursal</b>
+      <div class="muted">
+        Esta página se puede ajustar: agregar trámites, cambiar montos máximos y editar pasos.
+        Busca en el código la sección <span class="mono">TRAMITES</span>.
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // === CONFIGURACIÓN ===
+    // Ajusta "montoMaxExpress" a la política real de tu Caja Express.
+    // Ajusta trámites y pasos según tu sucursal.
+    const montoMaxExpress = 200000; // <-- EJEMPLO (CLP). Cambia a tu monto real.
+
+    const TRAMITES = [
+      {
+        id: "cartola",
+        nombre: "Obtener cartola / movimientos",
+        descripcion: "Imprime o revisa tus movimientos.",
+        regla: () => ({ canal: "ATI", etiqueta: "Se puede en ATI", tipo: "ok" }),
+        pasos: [
+          "En ATI, selecciona “Cartolas / Movimientos”.",
+          "Ingresa tu RUT (y clave si corresponde).",
+          "Elige el periodo (últimos movimientos o rango).",
+          "Confirma e imprime o visualiza."
+        ]
+      },
+      {
+        id: "clave",
+        nombre: "Recuperar / generar clave",
+        descripcion: "Clave para uso de servicios o banca.",
+        regla: () => ({ canal: "ATI", etiqueta: "Se puede en ATI", tipo: "ok" }),
+        pasos: [
+          "En ATI, elige “Claves / Seguridad”.",
+          "Selecciona “Recuperar/Generar clave”.",
+          "Sigue las instrucciones en pantalla y confirma.",
+          "Guarda tu clave en un lugar seguro."
+        ]
+      },
+      {
+        id: "consultas",
+        nombre: "Consultas rápidas (saldo / productos)",
+        descripcion: "Consultas sin operación de dinero.",
+        regla: () => ({ canal: "CONSULTA_EXPRESS", etiqueta: "Se puede en Consulta Express", tipo: "ok" }),
+        pasos: [
+          "En Consulta Express, selecciona “Consultas”.",
+          "Ingresa tu RUT (y validación si aparece).",
+          "Revisa saldo/productos y finaliza."
+        ]
+      },
+      {
+        id: "cobro_vale",
+        nombre: "Cobro de vale / documento (monto)",
+        descripcion: "Cobro de vale u operación con monto. Puede ir a Express si no supera el máximo.",
+        regla: ({ monto }) => {
+          if (monto == null || Number.isNaN(monto)) {
+            return { canal: "DUDOSO", etiqueta: "Ingresa monto para recomendar canal", tipo: "warn" };
+          }
+          if (monto <= montoMaxExpress) {
+            return { canal: "CAJA_EXPRESS", etiqueta: `Se puede en Caja Express (≤ ${montoMaxExpress.toLocaleString("es-CL")} CLP)`, tipo: "ok" };
+          }
+          return { canal: "CAJA", etiqueta: `Debe ir a Caja (supera ${montoMaxExpress.toLocaleString("es-CL")} CLP)`, tipo: "no" };
+        },
+        pasos: [
+          "Si el monto es menor o igual al máximo, usa Caja Express.",
+          "Selecciona “Cobros / Vales” e ingresa los datos solicitados.",
+          "Confirma el monto y retira el comprobante/dinero si aplica.",
+          "Si el monto supera el máximo, saca número para Caja."
+        ]
+      },
+      {
+        id: "banca_linea",
+        nombre: "Ingresar a banca en línea (computador)",
+        descripcion: "Acceder a la banca en línea desde el computador.",
+        regla: () => ({ canal: "PC_BANCA", etiqueta: "Usa el computador de banca en línea", tipo: "ok" }),
+        pasos: [
+          "Dirígete al computador de banca en línea.",
+          "Ingresa a la web del banco e inicia sesión.",
+          "Realiza tu operación y cierra sesión al terminar."
+        ]
+      },
+      {
+        id: "tramite_complejo",
+        nombre: "Trámite complejo / asesoría (ej. bloqueo, reclamo, productos)",
+        descripcion: "Requiere revisión por ejecutivo.",
+        regla: () => ({ canal: "MESON", etiqueta: "Debe ir a Mesón / Ejecutivo", tipo: "no" }),
+        pasos: [
+          "Saca ticket en el tótem de entrada para Mesón/Ejecutivo.",
+          "Espera tu turno y explica tu solicitud.",
+          "Ten tu cédula y antecedentes a mano."
+        ]
+      }
+    ];
+
+    // === UI ===
+    const sel = document.getElementById("tramite");
+    const montoInput = document.getElementById("monto");
+    const resultado = document.getElementById("resultado");
+    const desc = document.getElementById("desc");
+    const btnShare = document.getElementById("btnShare");
+
+    function badge(tipo, texto) {
+      const cls = tipo === "ok" ? "ok" : (tipo === "warn" ? "warn" : "no");
+      return `<span class="badge ${cls}">${texto}</span>`;
+    }
+
+    function render() {
+      const t = TRAMITES.find(x => x.id === sel.value);
+      const montoRaw = montoInput.value.trim();
+      const monto = montoRaw === "" ? null : Number(montoRaw);
+
+      desc.textContent = t?.descripcion ?? "";
+
+      const rec = t.regla({ monto });
+      const pasos = t.pasos ?? [];
+      const pasosHtml = pasos.length
+        ? `<ol>${pasos.map(p => `<li>${p}</li>`).join("")}</ol>`
+        : `<div class="muted">No hay pasos configurados.</div>`;
+
+      const canalTexto = {
+        "ATI": "ATI (Autoatención)",
+        "CONSULTA_EXPRESS": "Consulta Express",
+        "CAJA_EXPRESS": "Caja Express",
+        "CAJA": "Caja (atención con persona)",
+        "MESON": "Mesón/Ejecutivo",
+        "PC_BANCA": "Computador Banca en Línea",
+        "DUDOSO": "Falta información"
+      }[rec.canal] || rec.canal;
+
+      resultado.innerHTML = `
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          ${badge(rec.tipo, rec.etiqueta)}
+          <div><b>Canal recomendado:</b> ${canalTexto}</div>
+        </div>
+        <div class="muted" style="margin-top:10px;"><b>Paso a paso:</b></div>
+        ${pasosHtml}
+        <div class="muted" style="margin-top:10px;">
+          <b>Tip:</b> Si te pide datos adicionales y no los tienes, o aparece un error, pide apoyo al anfitrión/ATI Coach.
+        </div>
+      `;
+    }
+
+    function init() {
+      sel.innerHTML = TRAMITES.map(t => `<option value="${t.id}">${t.nombre}</option>`).join("");
+      sel.value = TRAMITES[0]?.id ?? "";
+      render();
+    }
+
+    sel.addEventListener("change", render);
+    montoInput.addEventListener("input", render);
+
+    btnShare.addEventListener("click", async () => {
+      const t = TRAMITES.find(x => x.id === sel.value);
+      const montoRaw = montoInput.value.trim();
+      const monto = montoRaw === "" ? null : Number(montoRaw);
+      const rec = t.regla({ monto });
+
+      const canalTexto = {
+        "ATI": "ATI",
+        "CONSULTA_EXPRESS": "Consulta Express",
+        "CAJA_EXPRESS": "Caja Express",
+        "CAJA": "Caja",
+        "MESON": "Mesón/Ejecutivo",
+        "PC_BANCA": "Computador Banca en Línea",
+        "DUDOSO": "Falta información"
+      }[rec.canal] || rec.canal;
+
+      const text = `Trámite: ${t.nombre}\nCanal recomendado: ${canalTexto}\n\nPasos:\n- ${t.pasos.join("\n- ")}`;
+
+      if (navigator.share) {
+        try { await navigator.share({ title: "Guía de Trámite", text }); }
+        catch (_) {}
+      } else {
+        await navigator.clipboard.writeText(text);
+        alert("Instrucciones copiadas al portapapeles.");
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>
