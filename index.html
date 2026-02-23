@@ -2,244 +2,747 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Guía de Trámites – Autoatención</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Guía de Trámites – Consulta Rápida y Caja Express</title>
+
   <style>
-    :root { --pad: 16px; --radius: 14px; }
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background:#f6f7f9; color:#111; }
-    header { padding: 18px var(--pad); background:#fff; border-bottom:1px solid #e6e8ee; position: sticky; top: 0; }
-    h1 { margin:0; font-size: 18px; }
-    main { padding: var(--pad); max-width: 760px; margin: 0 auto; }
-    .card { background:#fff; border:1px solid #e6e8ee; border-radius: var(--radius); padding: var(--pad); margin-bottom: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
-    label { font-weight: 600; display:block; margin-bottom: 8px; }
-    select, input { width: 100%; padding: 12px; border-radius: 12px; border:1px solid #d6dae6; font-size: 16px; background:#fff; }
-    .row { display:grid; grid-template-columns: 1fr; gap: 10px; }
-    .badge { display:inline-block; padding: 6px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; }
-    .ok { background:#e9f8ef; color:#0b6b2f; border:1px solid #bfe8cd; }
-    .warn { background:#fff4e5; color:#8a4b00; border:1px solid #ffd8a8; }
-    .no { background:#fdecec; color:#8a1f1f; border:1px solid #f6c0c0; }
-    ol { margin: 8px 0 0 20px; }
-    .muted { color:#5a6475; font-size: 13px; margin-top: 6px; }
-    .small { font-size: 12px; color:#5a6475; }
-    .btn { display:inline-flex; gap:8px; align-items:center; border:1px solid #d6dae6; padding: 10px 12px; border-radius: 12px; background:#fff; cursor:pointer; font-weight: 600; }
-    .btn:active { transform: translateY(1px); }
-    .grid2 { display:grid; grid-template-columns: 1fr; gap: 10px; }
-    @media (min-width: 640px) { .grid2 { grid-template-columns: 1fr 1fr; } }
-    .hr { height:1px; background:#eef0f5; margin: 12px 0; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+    :root{
+      --pad:16px; --radius:14px; --border:#e6e8ee; --bg:#f6f7f9; --text:#111; --muted:#555;
+      --accent:#1f6feb;
+      --font:14px;
+      --h1:18px;
+      --h2:18px;
+      --btn:14px;
+      --input:14px;
+    }
+    /* Modo Adulto Mayor */
+    body.senior{
+      --font:18px;
+      --h1:22px;
+      --h2:22px;
+      --btn:18px;
+      --input:18px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      margin:0; background:var(--bg); color:var(--text);
+      font-size:var(--font);
+    }
+    header{
+      padding:18px var(--pad); background:#fff; border-bottom:1px solid var(--border);
+      position:sticky; top:0; z-index:10;
+    }
+    header h1{ margin:0; font-size:var(--h1); }
+    header p{ margin:6px 0 0; color:var(--muted); font-size:calc(var(--font) - 2px); }
+
+    main{ padding:var(--pad); max-width:980px; margin:0 auto; }
+
+    .card{
+      background:#fff; border:1px solid var(--border); border-radius:var(--radius);
+      padding:var(--pad); margin-bottom:12px; box-shadow:0 1px 2px rgba(0,0,0,.05);
+    }
+    label{ font-weight:700; display:block; margin-bottom:8px; }
+
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    @media (max-width:820px){ .row{ grid-template-columns:1fr; } }
+
+    input, select, button{
+      width:100%; padding:12px; border-radius:12px; border:1px solid #d6dae6; background:#fff;
+      font-size:var(--input);
+    }
+    button{ cursor:pointer; font-weight:800; font-size:var(--btn); }
+    button.secondary{ background:#fff; }
+
+    .toolbar{
+      display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-top:12px;
+    }
+    @media (max-width:820px){ .toolbar{ grid-template-columns:1fr; } }
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:999px; border:1px solid var(--border); background:#fff;
+      font-size:calc(var(--font) - 2px); color:#222;
+    }
+    .ok{ border-color:#bfe7c7; background:#e9fff0; }
+    .warn{ border-color:#ffd7a8; background:#fff3e6; }
+    .info{ border-color:#cfe3ff; background:#eef5ff; }
+    .muted{ color:var(--muted); }
+
+    .kpi{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .steps{ margin:10px 0 0; padding-left:20px; }
+    .steps li{ margin:8px 0; }
+
+    .grid2{ display:grid; grid-template-columns: 1.2fr .8fr; gap:12px; }
+    @media (max-width:980px){ .grid2{ grid-template-columns:1fr; } }
+
+    .small{ font-size:calc(var(--font) - 3px); color:var(--muted); }
+    .hr{ height:1px; background:var(--border); margin:12px 0; }
+    .tag{
+      display:inline-block;
+      font-size:calc(var(--font) - 3px);
+      padding:6px 10px; border-radius:999px;
+      background:#f1f3f7; border:1px solid var(--border);
+    }
+
+    .switch{
+      display:flex; align-items:center; gap:10px; border:1px solid #d6dae6; border-radius:12px;
+      padding:10px 12px; background:#fff;
+    }
+    .switch input{ width:auto; transform:scale(1.3); }
+    body.senior .switch input{ transform:scale(1.6); }
+    .switch span{ font-weight:700; }
+
+    .req-box{
+      border:1px dashed #cbd5e1; border-radius:12px; padding:12px; background:#fbfcff;
+    }
+    .req-title{ font-weight:800; margin:0 0 8px; }
+    .req-list{ margin:0; padding-left:20px; }
   </style>
 </head>
+
 <body>
-  <header>
-    <h1>Guía rápida de trámites (ATI / Caja Express)</h1>
-    <div class="small">Escanea el QR, elige tu trámite y sigue los pasos.</div>
-  </header>
+<header>
+  <h1 id="hdrTitle">Guía rápida de trámites</h1>
+  <p id="hdrSubtitle">Elige tu trámite y te indicamos dónde hacerlo + un paso a paso simple.</p>
 
-  <main>
+  <div class="toolbar">
+    <div>
+      <label for="lang" id="lblLang">Idioma</label>
+      <select id="lang">
+        <option value="es">Español</option>
+        <option value="en">English</option>
+        <option value="ht">Kreyòl</option>
+      </select>
+    </div>
+
+    <div>
+      <label id="lblSenior">Accesibilidad</label>
+      <div class="switch">
+        <input type="checkbox" id="seniorMode" />
+        <span id="seniorText">Modo Adulto Mayor</span>
+      </div>
+    </div>
+
+    <div>
+      <label for="channelQuick" id="lblChannelQuick">Filtro rápido</label>
+      <select id="channelQuick">
+        <option value="all">Ver todos</option>
+        <option value="consulta_rapida">Consulta Rápida (Terminal)</option>
+        <option value="caja_express">Caja Express</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <label for="search" id="lblSearch">Buscar trámite</label>
+    <input id="search" type="text" placeholder="Ej: cartola, bloqueo, depósito, vale vista, giro, pago…" />
+
+    <div class="hr"></div>
+
+    <div class="row">
+      <div>
+        <label for="procedure" id="lblProcedure">Trámite</label>
+        <select id="procedure"></select>
+      </div>
+
+      <div>
+        <label for="channel" id="lblChannel">Canal</label>
+        <select id="channel">
+          <option value="all">Ver todos</option>
+          <option value="consulta_rapida">Consulta Rápida (Terminal)</option>
+          <option value="caja_express">Caja Express</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="kpi" id="badges"></div>
+  </div>
+
+  <div class="grid2">
     <div class="card">
-      <div class="grid2">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
         <div>
-          <label for="tramite">¿Qué trámite quieres realizar?</label>
-          <select id="tramite"></select>
-          <div class="muted" id="desc"></div>
+          <div class="tag" id="whereTag">—</div>
+          <h2 style="margin:8px 0 0; font-size:var(--h2);" id="title">Selecciona un trámite</h2>
+          <p class="muted" style="margin:6px 0 0;" id="desc">Te mostraremos el lugar recomendado y el paso a paso.</p>
         </div>
-        <div>
-          <label for="monto">Monto (solo si aplica)</label>
-          <input id="monto" type="number" inputmode="numeric" placeholder="Ej: 50000" min="0" />
-          <div class="muted">Si tu trámite no tiene monto, déjalo vacío.</div>
-        </div>
+        <button class="secondary" id="copyBtn" title="Copiar paso a paso">Copiar</button>
       </div>
 
       <div class="hr"></div>
 
-      <div id="resultado" class="card" style="margin:0; border-style:dashed;"></div>
+      <div class="req-box">
+        <p class="req-title" id="reqTitle">Requisitos previos</p>
+        <ul class="req-list" id="reqList"></ul>
+      </div>
 
       <div class="hr"></div>
 
-      <button class="btn" id="btnShare" type="button">Compartir instrucciones</button>
-      <span class="small"> (opcional)</span>
+      <h3 style="margin:0 0 6px;" id="stepsTitle">Paso a paso</h3>
+      <ol class="steps" id="steps"></ol>
+
+      <p class="small" id="note"></p>
     </div>
 
     <div class="card">
-      <b>Nota para la sucursal</b>
-      <div class="muted">
-        Esta página se puede ajustar: agregar trámites, cambiar montos máximos y editar pasos.
-        Busca en el código la sección <span class="mono">TRAMITES</span>.
-      </div>
+      <h3 style="margin:0 0 10px;" id="tipsTitle">Tips para hacerlo rápido</h3>
+      <ul class="steps" id="tips"></ul>
+
+      <div class="hr"></div>
+      <p class="small" id="footerNote">
+        Esta guía orienta al cliente. La pantalla puede variar, pero la lógica es la misma.
+      </p>
     </div>
-  </main>
+  </div>
+</main>
 
-  <script>
-    // === CONFIGURACIÓN ===
-    // Ajusta "montoMaxExpress" a la política real de tu Caja Express.
-    // Ajusta trámites y pasos según tu sucursal.
-    const montoMaxExpress = 200000; // <-- EJEMPLO (CLP). Cambia a tu monto real.
+<script>
+  // =========================
+  // IDIOMAS (ES / EN / HT)
+  // =========================
+  const I18N = {
+    es: {
+      hdrTitle: "Guía rápida de trámites",
+      hdrSubtitle: "Elige tu trámite y te indicamos dónde hacerlo + un paso a paso simple.",
+      lblLang: "Idioma",
+      lblSenior: "Accesibilidad",
+      seniorText: "Modo Adulto Mayor",
+      lblChannelQuick: "Filtro rápido",
+      lblSearch: "Buscar trámite",
+      phSearch: "Ej: cartola, bloqueo, depósito, vale vista, giro, pago…",
+      lblProcedure: "Trámite",
+      lblChannel: "Canal",
+      stepsTitle: "Paso a paso",
+      reqTitle: "Requisitos previos",
+      tipsTitle: "Tips para hacerlo rápido",
+      copy: "Copiar",
+      copied: "¡Copiado!",
+      tipItems: [
+        "Ten tu <b>tarjeta</b> a mano (si aplica).",
+        "Si el equipo pide identificación, sigue el flujo (PIN / biometría si corresponde).",
+        "Si necesitas comprobante, selecciona <b>“Imprimir”</b> al final.",
+        "Si te equivocas, usa <b>“Cancelar”</b> y vuelve al menú."
+      ],
+      footerNote: "Esta guía orienta al cliente. La pantalla puede variar, pero la lógica es la misma.",
+      badgeWhere: (w)=>`✅ Se realiza en: ${w}`,
+      badgeHelp: "Si el terminal no permite finalizar, pide apoyo al personal",
+      all: "Ver todos",
+      cr: "Consulta Rápida (Terminal)",
+      ce: "Caja Express",
+      notePrefix: "Nota: "
+    },
+    en: {
+      hdrTitle: "Quick transaction guide",
+      hdrSubtitle: "Choose your transaction and we’ll tell you where to do it + simple steps.",
+      lblLang: "Language",
+      lblSenior: "Accessibility",
+      seniorText: "Senior mode",
+      lblChannelQuick: "Quick filter",
+      lblSearch: "Search transaction",
+      phSearch: "Ex: statement, card block, deposit, draft, withdrawal, payment…",
+      lblProcedure: "Transaction",
+      lblChannel: "Channel",
+      stepsTitle: "Step-by-step",
+      reqTitle: "Requirements",
+      tipsTitle: "Tips to go faster",
+      copy: "Copy",
+      copied: "Copied!",
+      tipItems: [
+        "Have your <b>card</b> ready (if needed).",
+        "If identification is required, follow the flow (PIN / biometrics if applicable).",
+        "If you need a receipt, choose <b>“Print”</b> at the end.",
+        "If you make a mistake, press <b>“Cancel”</b> and return to menu."
+      ],
+      footerNote: "This guide is for orientation. Screens may vary, but the logic is the same.",
+      badgeWhere: (w)=>`✅ Done at: ${w}`,
+      badgeHelp: "If you can’t finish on the terminal, ask staff for help",
+      all: "Show all",
+      cr: "Quick Consultation (Terminal)",
+      ce: "Express Teller Machine",
+      notePrefix: "Note: "
+    },
+    ht: {
+      hdrTitle: "Gid rapid pou sèvis yo",
+      hdrSubtitle: "Chwazi sèvis ou vle a, n ap di w kote pou fè l + etap senp.",
+      lblLang: "Lang",
+      lblSenior: "Aksè fasil",
+      seniorText: "Mòd granmoun aje",
+      lblChannelQuick: "Filtre rapid",
+      lblSearch: "Chèche sèvis",
+      phSearch: "Eg: ekstrè kont, bloke kat, depo, vale vista, retrè, peman…",
+      lblProcedure: "Sèvis",
+      lblChannel: "Kanal",
+      stepsTitle: "Etap pa etap",
+      reqTitle: "Sa w dwe gen anvan",
+      tipsTitle: "Konsèy pou pi vit",
+      copy: "Kopye",
+      copied: "Kopye!",
+      tipItems: [
+        "Kenbe <b>kat</b> ou pare (si sa nesesè).",
+        "Si yo mande idantifikasyon, swiv etap yo (PIN / biyometri si sa aplikab).",
+        "Si ou bezwen resi, chwazi <b>“Enprime”</b> nan fen an.",
+        "Si ou fè erè, peze <b>“Anile”</b> epi retounen nan meni an."
+      ],
+      footerNote: "Gid sa a se pou ede oryante. Ekran yo ka chanje, men lojik la menm.",
+      badgeWhere: (w)=>`✅ Fè li nan: ${w}`,
+      badgeHelp: "Si ou pa ka fini sou tèminal la, mande pèsonèl la ede w",
+      all: "Wè tout",
+      cr: "Konsiltasyon rapid (Tèminal)",
+      ce: "Kès Express",
+      notePrefix: "Nòt: "
+    }
+  };
 
-    const TRAMITES = [
-      {
-        id: "cartola",
-        nombre: "Obtener cartola / movimientos",
-        descripcion: "Imprime o revisa tus movimientos.",
-        regla: () => ({ canal: "ATI", etiqueta: "Se puede en ATI", tipo: "ok" }),
-        pasos: [
-          "En ATI, selecciona “Cartolas / Movimientos”.",
-          "Ingresa tu RUT (y clave si corresponde).",
-          "Elige el periodo (últimos movimientos o rango).",
-          "Confirma e imprime o visualiza."
+  // =========================
+  // BASE DE TRÁMITES (CON REQUISITOS)
+  // REGLA IMPORTANTE: Consulta Rápida SIEMPRE requiere RUT + Clave Internet
+  // =========================
+  const PROCEDURES = [
+    // ===== CONSULTA RÁPIDA (Terminal) =====
+    {
+      id: "bloqueo_tarjetas",
+      channel: "consulta_rapida",
+      name: { es:"Bloqueo de tarjetas de crédito y débito", en:"Block credit/debit cards", ht:"Bloke kat kredi/debi" },
+      desc: { es:"Bloquea tu tarjeta por seguridad.", en:"Block your card for security.", ht:"Bloke kat ou pou sekirite." },
+      where: { es:"Consulta Rápida (Terminal)", en:"Quick Consultation (Terminal)", ht:"Konsiltasyon rapid (Tèminal)" },
+      badges: ["Seguridad","Rápido"],
+      req: {
+        es:["RUT", "Clave de Internet (obligatoria)"],
+        en:["RUT (ID)", "Internet password (required)"],
+        ht:["RUT (ID)", "Modpas entènèt (obligatwa)"]
+      },
+      steps: {
+        es:[
+          "Ingresar con <b>RUT</b> y <b>Clave de Internet</b>.",
+          "Ir a “Seguridad / Bloqueos”.",
+          "Seleccionar “Bloqueo de tarjeta”.",
+          "Elegir “Crédito” o “Débito”.",
+          "Confirmar el bloqueo y finalizar.",
+          "Imprimir comprobante si aparece."
+        ],
+        en:[
+          "Log in with <b>RUT</b> and <b>Internet password</b>.",
+          "Go to “Security / Blocks”.",
+          "Select “Card block”.",
+          "Choose “Credit” or “Debit”.",
+          "Confirm and finish.",
+          "Print receipt if available."
+        ],
+        ht:[
+          "Antre ak <b>RUT</b> ak <b>modpas entènèt</b>.",
+          "Ale nan “Sekirite / Blokaj”.",
+          "Chwazi “Bloke kat”.",
+          "Chwazi “Kredi” oswa “Debi”.",
+          "Konfime epi fini.",
+          "Enprime resi a si li disponib."
         ]
       },
-      {
-        id: "clave",
-        nombre: "Recuperar / generar clave",
-        descripcion: "Clave para uso de servicios o banca.",
-        regla: () => ({ canal: "ATI", etiqueta: "Se puede en ATI", tipo: "ok" }),
-        pasos: [
-          "En ATI, elige “Claves / Seguridad”.",
-          "Selecciona “Recuperar/Generar clave”.",
-          "Sigue las instrucciones en pantalla y confirma.",
-          "Guarda tu clave en un lugar seguro."
-        ]
-      },
-      {
-        id: "consultas",
-        nombre: "Consultas rápidas (saldo / productos)",
-        descripcion: "Consultas sin operación de dinero.",
-        regla: () => ({ canal: "CONSULTA_EXPRESS", etiqueta: "Se puede en Consulta Express", tipo: "ok" }),
-        pasos: [
-          "En Consulta Express, selecciona “Consultas”.",
-          "Ingresa tu RUT (y validación si aparece).",
-          "Revisa saldo/productos y finaliza."
-        ]
-      },
-      {
-        id: "cobro_vale",
-        nombre: "Cobro de vale / documento (monto)",
-        descripcion: "Cobro de vale u operación con monto. Puede ir a Express si no supera el máximo.",
-        regla: ({ monto }) => {
-          if (monto == null || Number.isNaN(monto)) {
-            return { canal: "DUDOSO", etiqueta: "Ingresa monto para recomendar canal", tipo: "warn" };
-          }
-          if (monto <= montoMaxExpress) {
-            return { canal: "CAJA_EXPRESS", etiqueta: `Se puede en Caja Express (≤ ${montoMaxExpress.toLocaleString("es-CL")} CLP)`, tipo: "ok" };
-          }
-          return { canal: "CAJA", etiqueta: `Debe ir a Caja (supera ${montoMaxExpress.toLocaleString("es-CL")} CLP)`, tipo: "no" };
-        },
-        pasos: [
-          "Si el monto es menor o igual al máximo, usa Caja Express.",
-          "Selecciona “Cobros / Vales” e ingresa los datos solicitados.",
-          "Confirma el monto y retira el comprobante/dinero si aplica.",
-          "Si el monto supera el máximo, saca número para Caja."
-        ]
-      },
-      {
-        id: "banca_linea",
-        nombre: "Ingresar a banca en línea (computador)",
-        descripcion: "Acceder a la banca en línea desde el computador.",
-        regla: () => ({ canal: "PC_BANCA", etiqueta: "Usa el computador de banca en línea", tipo: "ok" }),
-        pasos: [
-          "Dirígete al computador de banca en línea.",
-          "Ingresa a la web del banco e inicia sesión.",
-          "Realiza tu operación y cierra sesión al terminar."
-        ]
-      },
-      {
-        id: "tramite_complejo",
-        nombre: "Trámite complejo / asesoría (ej. bloqueo, reclamo, productos)",
-        descripcion: "Requiere revisión por ejecutivo.",
-        regla: () => ({ canal: "MESON", etiqueta: "Debe ir a Mesón / Ejecutivo", tipo: "no" }),
-        pasos: [
-          "Saca ticket en el tótem de entrada para Mesón/Ejecutivo.",
-          "Espera tu turno y explica tu solicitud.",
-          "Ten tu cédula y antecedentes a mano."
-        ]
+      note: {
+        es:"En Consulta Rápida siempre se ingresa con RUT + Clave de Internet.",
+        en:"Quick Consultation always requires RUT + Internet password.",
+        ht:"Tèminal la toujou mande RUT + modpas entènèt."
       }
-    ];
+    },
 
-    // === UI ===
-    const sel = document.getElementById("tramite");
-    const montoInput = document.getElementById("monto");
-    const resultado = document.getElementById("resultado");
-    const desc = document.getElementById("desc");
-    const btnShare = document.getElementById("btnShare");
-
-    function badge(tipo, texto) {
-      const cls = tipo === "ok" ? "ok" : (tipo === "warn" ? "warn" : "no");
-      return `<span class="badge ${cls}">${texto}</span>`;
-    }
-
-    function render() {
-      const t = TRAMITES.find(x => x.id === sel.value);
-      const montoRaw = montoInput.value.trim();
-      const monto = montoRaw === "" ? null : Number(montoRaw);
-
-      desc.textContent = t?.descripcion ?? "";
-
-      const rec = t.regla({ monto });
-      const pasos = t.pasos ?? [];
-      const pasosHtml = pasos.length
-        ? `<ol>${pasos.map(p => `<li>${p}</li>`).join("")}</ol>`
-        : `<div class="muted">No hay pasos configurados.</div>`;
-
-      const canalTexto = {
-        "ATI": "ATI (Autoatención)",
-        "CONSULTA_EXPRESS": "Consulta Express",
-        "CAJA_EXPRESS": "Caja Express",
-        "CAJA": "Caja (atención con persona)",
-        "MESON": "Mesón/Ejecutivo",
-        "PC_BANCA": "Computador Banca en Línea",
-        "DUDOSO": "Falta información"
-      }[rec.canal] || rec.canal;
-
-      resultado.innerHTML = `
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-          ${badge(rec.tipo, rec.etiqueta)}
-          <div><b>Canal recomendado:</b> ${canalTexto}</div>
-        </div>
-        <div class="muted" style="margin-top:10px;"><b>Paso a paso:</b></div>
-        ${pasosHtml}
-        <div class="muted" style="margin-top:10px;">
-          <b>Tip:</b> Si te pide datos adicionales y no los tienes, o aparece un error, pide apoyo al anfitrión/ATI Coach.
-        </div>
-      `;
-    }
-
-    function init() {
-      sel.innerHTML = TRAMITES.map(t => `<option value="${t.id}">${t.nombre}</option>`).join("");
-      sel.value = TRAMITES[0]?.id ?? "";
-      render();
-    }
-
-    sel.addEventListener("change", render);
-    montoInput.addEventListener("input", render);
-
-    btnShare.addEventListener("click", async () => {
-      const t = TRAMITES.find(x => x.id === sel.value);
-      const montoRaw = montoInput.value.trim();
-      const monto = montoRaw === "" ? null : Number(montoRaw);
-      const rec = t.regla({ monto });
-
-      const canalTexto = {
-        "ATI": "ATI",
-        "CONSULTA_EXPRESS": "Consulta Express",
-        "CAJA_EXPRESS": "Caja Express",
-        "CAJA": "Caja",
-        "MESON": "Mesón/Ejecutivo",
-        "PC_BANCA": "Computador Banca en Línea",
-        "DUDOSO": "Falta información"
-      }[rec.canal] || rec.canal;
-
-      const text = `Trámite: ${t.nombre}\nCanal recomendado: ${canalTexto}\n\nPasos:\n- ${t.pasos.join("\n- ")}`;
-
-      if (navigator.share) {
-        try { await navigator.share({ title: "Guía de Trámite", text }); }
-        catch (_) {}
-      } else {
-        await navigator.clipboard.writeText(text);
-        alert("Instrucciones copiadas al portapapeles.");
+    {
+      id: "cupon_pago_cuota_credito",
+      channel: "consulta_rapida",
+      name: { es:"Imprimir cupón de pago de cuota de crédito", en:"Print loan installment payment coupon", ht:"Enprime koupon peman kredi" },
+      desc: { es:"Obtén un cupón para pagar tu cuota.", en:"Get a coupon to pay your installment.", ht:"Jwenn koupon pou peye tranch ou." },
+      where: { es:"Consulta Rápida (Terminal)", en:"Quick Consultation (Terminal)", ht:"Konsiltasyon rapid (Tèminal)" },
+      badges: ["Cupón","Impresión"],
+      req: {
+        es:["RUT", "Clave de Internet (obligatoria)"],
+        en:["RUT (ID)", "Internet password (required)"],
+        ht:["RUT (ID)", "Modpas entènèt (obligatwa)"]
+      },
+      steps: {
+        es:[
+          "Ingresar con <b>RUT</b> y <b>Clave de Internet</b>.",
+          "Seleccionar “Cupones” o “Créditos”.",
+          "Elegir “Cupón de pago / cuota de crédito”.",
+          "Seleccionar crédito/cuota si aparece.",
+          "Imprimir el cupón."
+        ],
+        en:[
+          "Log in with <b>RUT</b> and <b>Internet password</b>.",
+          "Select “Coupons” or “Loans”.",
+          "Choose “Payment coupon / installment”.",
+          "Select the loan/installment if shown.",
+          "Print the coupon."
+        ],
+        ht:[
+          "Antre ak <b>RUT</b> ak <b>modpas entènèt</b>.",
+          "Chwazi “Koupon” oswa “Kredi”.",
+          "Chwazi “Koupon peman / tranch”.",
+          "Chwazi kredi/tranch la si li parèt.",
+          "Enprime koupon an."
+        ]
+      },
+      note: {
+        es:"Guarda el cupón: incluye referencia y monto.",
+        en:"Keep the coupon: it includes reference and amount.",
+        ht:"Kenbe koupon an: li gen referans ak montan."
       }
+    },
+
+    {
+      id: "cartolas",
+      channel: "consulta_rapida",
+      name: { es:"Obtener cartolas (TC / Cuenta Corriente / Vista)", en:"Get statements (Credit card / Checking / Vista)", ht:"Jwenn ekstrè kont (kat / kont)" },
+      desc: { es:"Imprime o consulta cartolas/resúmenes.", en:"View or print statements.", ht:"Wè oswa enprime ekstrè kont." },
+      where: { es:"Consulta Rápida (Terminal)", en:"Quick Consultation (Terminal)", ht:"Konsiltasyon rapid (Tèminal)" },
+      badges: ["Cartolas","Impresión"],
+      req: {
+        es:["RUT", "Clave de Internet (obligatoria)"],
+        en:["RUT (ID)", "Internet password (required)"],
+        ht:["RUT (ID)", "Modpas entènèt (obligatwa)"]
+      },
+      steps: {
+        es:[
+          "Ingresar con <b>RUT</b> y <b>Clave de Internet</b>.",
+          "Entrar a “Cartolas” o “Consultas”.",
+          "Elegir producto (TC / Corriente / Vista).",
+          "Elegir período (si aparece).",
+          "Visualizar o imprimir."
+        ],
+        en:[
+          "Log in with <b>RUT</b> and <b>Internet password</b>.",
+          "Go to “Statements / Inquiries”.",
+          "Choose product (Credit / Checking / Vista).",
+          "Choose period (if available).",
+          "View or print."
+        ],
+        ht:[
+          "Antre ak <b>RUT</b> ak <b>modpas entènèt</b>.",
+          "Ale nan “Ekstrè kont / Konsiltasyon”.",
+          "Chwazi pwodwi a (kat / kont).",
+          "Chwazi peryòd la (si li disponib).",
+          "Wè oswa enprime."
+        ]
+      },
+      note: {
+        es:"Si solo quieres ver, elige “Visualizar”.",
+        en:"If you only need to view, select “View”.",
+        ht:"Si ou vle sèlman gade, chwazi “Wè”."
+      }
+    },
+
+    // ===== CAJA EXPRESS =====
+    {
+      id: "deposito_efectivo_2m",
+      channel: "caja_express",
+      name: { es:"Depósito en efectivo hasta $2.000.000 (solo billetes)", en:"Cash deposit up to $2,000,000 (bills only)", ht:"Depo lajan kach jiska $2.000.000 (billet sèlman)" },
+      desc: { es:"Depósito rápido de billetes con tope indicado.", en:"Quick cash deposit with shown limit.", ht:"Depo rapid ak limit ki endike." },
+      where: { es:"Caja Express", en:"Express Teller Machine", ht:"Kès Express" },
+      badges: ["Depósito","Efectivo"],
+      req: {
+        es:["Tarjeta (si el equipo lo solicita)", "Conocer la clave/PIN (si aplica)", "Billetes en buen estado"],
+        en:["Card (if requested)", "PIN/password (if applicable)", "Bills in good condition"],
+        ht:["Kat (si yo mande)", "PIN/modpas (si sa aplikab)", "Billet ki byen plat"]
+      },
+      steps: {
+        es:[
+          "Seleccionar “Depósitos” > “Depósito en efectivo”.",
+          "Identificarse si el equipo lo pide (tarjeta/PIN).",
+          "Ingresar billetes cuando se habilite la ranura.",
+          "Revisar el monto detectado.",
+          "Confirmar e imprimir comprobante."
+        ],
+        en:[
+          "Select “Deposits” > “Cash deposit”.",
+          "Identify if requested (card/PIN).",
+          "Insert bills when the slot opens.",
+          "Check detected amount.",
+          "Confirm and print receipt."
+        ],
+        ht:[
+          "Chwazi “Depo” > “Depo lajan kach”.",
+          "Idantifye si yo mande (kat/PIN).",
+          "Mete billet yo lè machin nan ouvè.",
+          "Verifye montan an.",
+          "Konfime epi enprime resi a."
+        ]
+      },
+      note: {
+        es:"Si el equipo rechaza billetes, alísalos y reintenta.",
+        en:"If bills are rejected, flatten them and try again.",
+        ht:"Si li rejte billet yo, plat yo epi eseye ankò."
+      }
+    },
+
+    {
+      id: "cobro_vale_vista_efectivo",
+      channel: "caja_express",
+      name: { es:"Cobro de Vale Vista en efectivo", en:"Cash withdrawal of Vale Vista", ht:"Kobro Vale Vista an lajan kach" },
+      desc: { es:"Cobra un vale vista y recibe efectivo.", en:"Cash out a Vale Vista.", ht:"W ap pran lajan sou Vale Vista." },
+      where: { es:"Caja Express", en:"Express Teller Machine", ht:"Kès Express" },
+      badges: ["Cobro","Vale Vista"],
+      req: {
+        es:["Documento/vale vista", "Identificación (según equipo)", "Tarjeta/PIN (si aplica)"],
+        en:["Vale Vista document", "ID (as requested)", "Card/PIN (if applicable)"],
+        ht:["Dokiman Vale Vista", "ID (si yo mande)", "Kat/PIN (si sa aplikab)"]
+      },
+      steps: {
+        es:[
+          "Seleccionar “Cobros” > “Cobro Vale Vista”.",
+          "Elegir “En efectivo”.",
+          "Ingresar/escaneo de datos del vale (si lo solicita).",
+          "Validar identidad si corresponde.",
+          "Retirar efectivo e imprimir comprobante."
+        ],
+        en:[
+          "Select “Collections” > “Vale Vista”.",
+          "Choose “Cash”.",
+          "Enter/scan Vale Vista data (if requested).",
+          "Verify identity if needed.",
+          "Take cash and print receipt."
+        ],
+        ht:[
+          "Chwazi “Kobro” > “Vale Vista”.",
+          "Chwazi “Lajan kach”.",
+          "Antre/oswa eskane done yo (si yo mande).",
+          "Verifye idantite si sa nesesè.",
+          "Pran lajan an epi enprime resi a."
+        ]
+      },
+      note: {
+        es:"Verifica el monto antes de retirarte.",
+        en:"Check the amount before leaving.",
+        ht:"Verifye montan an avan ou ale."
+      }
+    }
+  ];
+
+  // =========================
+  // UI ELEMENTS
+  // =========================
+  const elLang = document.getElementById("lang");
+  const elSenior = document.getElementById("seniorMode");
+  const elChannelQuick = document.getElementById("channelQuick");
+
+  const elSearch = document.getElementById("search");
+  const elChannel = document.getElementById("channel");
+  const elProcedure = document.getElementById("procedure");
+  const elBadges = document.getElementById("badges");
+
+  const elWhereTag = document.getElementById("whereTag");
+  const elTitle = document.getElementById("title");
+  const elDesc = document.getElementById("desc");
+  const elSteps = document.getElementById("steps");
+  const elNote = document.getElementById("note");
+  const elCopyBtn = document.getElementById("copyBtn");
+
+  const elReqList = document.getElementById("reqList");
+
+  // Labels
+  const idsToText = [
+    ["hdrTitle","hdrTitle"],["hdrSubtitle","hdrSubtitle"],["lblLang","lblLang"],
+    ["lblSenior","lblSenior"],["seniorText","seniorText"],["lblChannelQuick","lblChannelQuick"],
+    ["lblSearch","lblSearch"],["lblProcedure","lblProcedure"],["lblChannel","lblChannel"],
+    ["stepsTitle","stepsTitle"],["reqTitle","reqTitle"],["tipsTitle","tipsTitle"],["footerNote","footerNote"]
+  ];
+
+  function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+
+  function t(){ return I18N[elLang.value] || I18N.es; }
+
+  function setStaticText(){
+    const T = t();
+    idsToText.forEach(([id,key])=>{
+      const el = document.getElementById(id);
+      if (el) el.textContent = T[key];
     });
 
-    init();
-  </script>
+    elSearch.placeholder = T.phSearch;
+    elCopyBtn.textContent = T.copy;
+
+    // opciones canales
+    const mapChannelText = (v)=>{
+      if (v==="all") return T.all;
+      if (v==="consulta_rapida") return T.cr;
+      if (v==="caja_express") return T.ce;
+      return v;
+    };
+    [...elChannel.options].forEach(o=> o.textContent = mapChannelText(o.value));
+    [...elChannelQuick.options].forEach(o=> o.textContent = mapChannelText(o.value));
+
+    // tips
+    const tipsUl = document.getElementById("tips");
+    tipsUl.innerHTML = "";
+    T.tipItems.forEach(html=>{
+      const li = document.createElement("li");
+      li.innerHTML = html;
+      tipsUl.appendChild(li);
+    });
+  }
+
+  function getFilteredList(){
+    const q = normalize(elSearch.value.trim());
+    // filtro combinado: elChannelQuick domina, pero se puede usar también elChannel
+    const chQuick = elChannelQuick.value;
+    const ch = elChannel.value;
+
+    return PROCEDURES.filter(p=>{
+      const matchQ = !q
+        ? true
+        : normalize(p.name.es).includes(q) || normalize(p.desc.es).includes(q) ||
+          normalize(p.name.en).includes(q) || normalize(p.desc.en).includes(q) ||
+          normalize(p.name.ht).includes(q) || normalize(p.desc.ht).includes(q);
+
+      const matchChannel =
+        (chQuick==="all" ? true : p.channel===chQuick) &&
+        (ch==="all" ? true : p.channel===ch);
+
+      return matchQ && matchChannel;
+    });
+  }
+
+  function renderProcedureOptions(){
+    const list = getFilteredList();
+    const prev = elProcedure.value;
+    const lang = elLang.value;
+
+    elProcedure.innerHTML = "";
+    list.forEach(p=>{
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = `${p.name[lang]} — ${p.where[lang]}`;
+      elProcedure.appendChild(opt);
+    });
+
+    if (list.some(p=>p.id===prev)) elProcedure.value = prev;
+    else if (list.length) elProcedure.value = list[0].id;
+
+    renderSelected();
+  }
+
+  function renderBadges(p){
+    const T = t();
+    const lang = elLang.value;
+
+    elBadges.innerHTML = "";
+    if (!p) return;
+
+    const where = document.createElement("span");
+    where.className = "pill ok";
+    where.textContent = T.badgeWhere(p.where[lang]);
+    elBadges.appendChild(where);
+
+    // regla crítica: Consulta Rápida requiere RUT + Clave
+    if (p.channel==="consulta_rapida"){
+      const req = document.createElement("span");
+      req.className = "pill warn";
+      req.textContent =
+        (lang==="es") ? "⚠️ Requiere RUT + Clave de Internet (obligatoria)"
+        : (lang==="en") ? "⚠️ Requires RUT + Internet password"
+        : "⚠️ Oblije: RUT + modpas entènèt";
+      elBadges.appendChild(req);
+    }
+
+    (p.badges||[]).forEach(b=>{
+      const sp = document.createElement("span");
+      sp.className = "pill info";
+      sp.textContent = b;
+      elBadges.appendChild(sp);
+    });
+
+    const help = document.createElement("span");
+    help.className = "pill";
+    help.textContent = T.badgeHelp;
+    elBadges.appendChild(help);
+  }
+
+  function renderSelected(){
+    const lang = elLang.value;
+    const p = PROCEDURES.find(x=>x.id===elProcedure.value);
+    const T = t();
+
+    if (!p){
+      elWhereTag.textContent = "—";
+      elTitle.textContent = (lang==="es")?"Selecciona un trámite":(lang==="en")?"Select a transaction":"Chwazi yon sèvis";
+      elDesc.textContent = (lang==="es")?"Te mostraremos el lugar recomendado y el paso a paso.":(lang==="en")?"We’ll show where to do it and the steps.":"N ap montre w kote ak etap yo.";
+      elSteps.innerHTML = "";
+      elReqList.innerHTML = "";
+      elNote.textContent = "";
+      elBadges.innerHTML = "";
+      return;
+    }
+
+    elWhereTag.textContent = p.where[lang];
+    elTitle.textContent = p.name[lang];
+    elDesc.textContent = p.desc[lang];
+
+    // requisitos
+    elReqList.innerHTML = "";
+    (p.req[lang]||[]).forEach(r=>{
+      const li = document.createElement("li");
+      li.textContent = r;
+      elReqList.appendChild(li);
+    });
+
+    // pasos
+    elSteps.innerHTML = "";
+    (p.steps[lang]||[]).forEach(s=>{
+      const li = document.createElement("li");
+      li.innerHTML = s;
+      elSteps.appendChild(li);
+    });
+
+    elNote.textContent = p.note?.[lang] ? (T.notePrefix + p.note[lang]) : "";
+    renderBadges(p);
+  }
+
+  document.getElementById("copyBtn").addEventListener("click", async ()=>{
+    const lang = elLang.value;
+    const T = t();
+    const p = PROCEDURES.find(x=>x.id===elProcedure.value);
+    if (!p) return;
+
+    const text =
+      `${p.name[lang]}\n`+
+      `${T.badgeWhere(p.where[lang])}\n\n`+
+      `${document.getElementById("reqTitle").textContent}:\n`+
+      (p.req[lang]||[]).map(r=>`- ${r}`).join("\n") +
+      `\n\n${document.getElementById("stepsTitle").textContent}:\n`+
+      (p.steps[lang]||[]).map((s,i)=>`${i+1}. ${s.replace(/<[^>]*>/g,"")}`).join("\n")+
+      (p.note?.[lang] ? `\n\n${T.notePrefix}${p.note[lang]}` : "");
+
+    try{
+      await navigator.clipboard.writeText(text);
+      elCopyBtn.textContent = T.copied;
+      setTimeout(()=> elCopyBtn.textContent = T.copy, 900);
+    }catch(e){
+      alert(lang==="es" ? "No se pudo copiar. Copia manualmente." : lang==="en" ? "Copy failed. Please copy manually." : "Pa ka kopye. Tanpri kopye manyèlman.");
+    }
+  });
+
+  // Eventos
+  elLang.addEventListener("change", ()=>{
+    setStaticText();
+    renderProcedureOptions();
+  });
+  elSenior.addEventListener("change", ()=>{
+    document.body.classList.toggle("senior", elSenior.checked);
+  });
+
+  elChannelQuick.addEventListener("change", ()=>{
+    // sincroniza también el filtro de canal principal para evitar confusión
+    elChannel.value = elChannelQuick.value;
+    renderProcedureOptions();
+  });
+
+  elSearch.addEventListener("input", renderProcedureOptions);
+  elChannel.addEventListener("change", renderProcedureOptions);
+  elProcedure.addEventListener("change", renderSelected);
+
+  // Init
+  setStaticText();
+  renderProcedureOptions();
+</script>
 </body>
 </html>
