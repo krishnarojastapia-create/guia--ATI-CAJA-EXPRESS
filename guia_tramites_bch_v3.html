@@ -1,0 +1,840 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Guía de Trámites – ATI (Consulta Rápida) y Caja Express</title>
+  <style>
+    :root{--pad:16px;--radius:14px;--border:#e6e8ee;--bg:#f6f7f9;--text:#111;--muted:#555;--font:14px;--h1:18px;--h2:18px;--btn:14px;--input:14px;}
+    body.senior{--font:18px;--h1:22px;--h2:22px;--btn:18px;--input:18px;}
+    *{box-sizing:border-box} body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;margin:0;background:var(--bg);color:var(--text);font-size:var(--font)}
+    header{padding:18px var(--pad);background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10}
+    header h1{margin:0;font-size:var(--h1)} header p{margin:6px 0 0;color:var(--muted);font-size:calc(var(--font) - 2px)}
+    main{padding:var(--pad);max-width:980px;margin:0 auto}
+    .card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:var(--pad);margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+    label{font-weight:800;display:block;margin-bottom:8px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px} @media (max-width:820px){.row{grid-template-columns:1fr}}
+    input,select,button{width:100%;padding:12px;border-radius:12px;border:1px solid #d6dae6;background:#fff;font-size:var(--input)}
+    button{cursor:pointer;font-weight:900;font-size:var(--btn)} button.secondary{background:#fff}
+    .toolbar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px} @media (max-width:820px){.toolbar{grid-template-columns:1fr}}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;border:1px solid var(--border);background:#fff;font-size:calc(var(--font) - 2px);color:#222}
+    .ok{border-color:#bfe7c7;background:#e9fff0} .warn{border-color:#ffd7a8;background:#fff3e6} .info{border-color:#cfe3ff;background:#eef5ff}
+    .muted{color:var(--muted)}
+    .kpi{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .steps{margin:10px 0 0;padding-left:20px} .steps li{margin:8px 0}
+    .grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:12px} @media (max-width:980px){.grid2{grid-template-columns:1fr}}
+    .small{font-size:calc(var(--font) - 3px);color:var(--muted)}
+    .hr{height:1px;background:var(--border);margin:12px 0}
+    .tag{display:inline-block;font-size:calc(var(--font) - 3px);padding:6px 10px;border-radius:999px;background:#f1f3f7;border:1px solid var(--border)}
+    .switch{display:flex;align-items:center;gap:10px;border:1px solid #d6dae6;border-radius:12px;padding:10px 12px;background:#fff}
+    .switch input{width:auto;transform:scale(1.3)} body.senior .switch input{transform:scale(1.6)} .switch span{font-weight:800}
+    .req-box{border:1px dashed #cbd5e1;border-radius:12px;padding:12px;background:#fbfcff}
+    .req-title{font-weight:900;margin:0 0 8px} .req-list{margin:0;padding-left:20px}
+  </style>
+</head>
+<body>
+<header>
+  <h1 id="hdrTitle">Guía rápida de trámites</h1>
+  <p id="hdrSubtitle">Selecciona un trámite y te diremos si se hace en ATI (Consulta Rápida) o en Caja Express, con un paso a paso simple.</p>
+
+  <div class="toolbar">
+    <div>
+      <label for="lang" id="lblLang">Idioma</label>
+      <select id="lang">
+        <option value="es">Español</option>
+        <option value="en">English</option>
+        <option value="ht">Kreyòl</option>
+      </select>
+    </div>
+    <div>
+      <label id="lblSenior">Accesibilidad</label>
+      <div class="switch">
+        <input type="checkbox" id="seniorMode" />
+        <span id="seniorText">Modo Adulto Mayor</span>
+      </div>
+    </div>
+    <div>
+      <label for="channelQuick" id="lblChannelQuick">Filtro rápido</label>
+      <select id="channelQuick">
+        <option value="all">Ver todos</option>
+        <option value="consulta_rapida">ATI (Consulta Rápida)</option>
+        <option value="caja_express">Caja Express</option>
+      </select>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <label for="search" id="lblSearch">Buscar trámite</label>
+    <input id="search" type="text" placeholder="Ej: saldo, cupón, cartola, bloqueo, depósito, giro, pago, clave…" />
+    <div class="hr"></div>
+    <div class="row">
+      <div>
+        <label for="procedure" id="lblProcedure">Trámite</label>
+        <select id="procedure"></select>
+      </div>
+      <div>
+        <label for="channel" id="lblChannel">Canal</label>
+        <select id="channel">
+          <option value="all">Ver todos</option>
+          <option value="consulta_rapida">ATI (Consulta Rápida)</option>
+          <option value="caja_express">Caja Express</option>
+        </select>
+      </div>
+    </div>
+    <div class="kpi" id="badges"></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <div>
+          <div class="tag" id="whereTag">—</div>
+          <h2 style="margin:8px 0 0; font-size:var(--h2);" id="title">Selecciona un trámite</h2>
+          <p class="muted" style="margin:6px 0 0;" id="desc">Te mostraremos dónde hacerlo y el paso a paso.</p>
+        </div>
+        <button class="secondary" id="copyBtn" title="Copiar paso a paso">Copiar</button>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="req-box">
+        <p class="req-title" id="reqTitle">Requisitos previos</p>
+        <ul class="req-list" id="reqList"></ul>
+      </div>
+
+      <div class="hr"></div>
+
+      <h3 style="margin:0 0 6px;" id="stepsTitle">Paso a paso</h3>
+      <ol class="steps" id="steps"></ol>
+
+      <p class="small" id="note"></p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin:0 0 10px;" id="tipsTitle">Tips para hacerlo rápido</h3>
+      <ul class="steps" id="tips"></ul>
+
+      <div class="hr"></div>
+      <p class="small" id="footerNote">Esta guía orienta al cliente. La pantalla puede variar, pero la lógica es la misma.</p>
+    </div>
+  </div>
+</main>
+
+<script>
+  const I18N = {
+    es: {
+      hdrTitle: "Guía rápida de trámites",
+      hdrSubtitle: "Selecciona un trámite y te diremos si se hace en ATI (Consulta Rápida) o en Caja Express, con un paso a paso simple.",
+      lblLang: "Idioma", lblSenior: "Accesibilidad", seniorText: "Modo Adulto Mayor",
+      lblChannelQuick: "Filtro rápido", lblSearch: "Buscar trámite",
+      phSearch: "Ej: saldo, cupón, cartola, bloqueo, depósito, giro, pago, clave…",
+      lblProcedure: "Trámite", lblChannel: "Canal",
+      stepsTitle: "Paso a paso", reqTitle: "Requisitos previos", tipsTitle: "Tips para hacerlo rápido",
+      copy: "Copiar", copied: "¡Copiado!",
+      tipItems: [
+        "Para <b>ATI</b>: necesitas <b>RUT</b> + <b>Clave de Internet</b> (obligatorio).",
+        "Si el equipo ofrece <b>cambio de idioma</b>, úsalo al inicio (Español / Inglés / Creole).",
+        "Si eres Adulto Mayor, activa <b>Modo Adulto Mayor</b> (texto más grande).",
+        "Si necesitas comprobante, elige <b>“Imprimir”</b> al final."
+      ],
+      footerNote: "Esta guía orienta al cliente. La pantalla puede variar, pero la lógica es la misma.",
+      badgeWhere: (w)=>`✅ Debes hacerlo aquí: ${w}`,
+      badgeHelp: "Si no puedes finalizar en el equipo, pide apoyo al personal",
+      all: "Ver todos", cr: "ATI (Consulta Rápida)", ce: "Caja Express",
+      notePrefix: "Nota: "
+    },
+    en: {
+      hdrTitle: "Quick transaction guide",
+      hdrSubtitle: "Select a transaction and we’ll tell you if it’s done on ATI (Quick Consultation) or Express Teller, with simple steps.",
+      lblLang: "Language", lblSenior: "Accessibility", seniorText: "Senior mode",
+      lblChannelQuick: "Quick filter", lblSearch: "Search transaction",
+      phSearch: "Ex: balance, coupon, statement, block, deposit, withdrawal, payment, password…",
+      lblProcedure: "Transaction", lblChannel: "Channel",
+      stepsTitle: "Step-by-step", reqTitle: "Requirements", tipsTitle: "Tips to go faster",
+      copy: "Copy", copied: "Copied!",
+      tipItems: [
+        "For <b>ATI</b>: you need <b>RUT</b> + <b>Internet password</b> (required).",
+        "Use <b>language switch</b> at the start if available (Spanish / English / Creole).",
+        "Enable <b>Senior mode</b> for larger text.",
+        "Choose <b>“Print”</b> at the end if you need a receipt."
+      ],
+      footerNote: "This guide is for orientation. Screens may vary, but the logic is the same.",
+      badgeWhere: (w)=>`✅ Do it here: ${w}`,
+      badgeHelp: "If you can’t finish on the machine, ask staff for help",
+      all: "Show all", cr: "ATI (Quick Consultation)", ce: "Express Teller",
+      notePrefix: "Note: "
+    },
+    ht: {
+      hdrTitle: "Gid rapid pou sèvis yo",
+      hdrSubtitle: "Chwazi sèvis la, n ap di w si se sou ATI oswa Kès Express, ak etap senp.",
+      lblLang: "Lang", lblSenior: "Aksè fasil", seniorText: "Mòd granmoun aje",
+      lblChannelQuick: "Filtre rapid", lblSearch: "Chèche sèvis",
+      phSearch: "Eg: balans, koupon, ekstrè kont, bloke, depo, retrè, peman, modpas…",
+      lblProcedure: "Sèvis", lblChannel: "Kanal",
+      stepsTitle: "Etap pa etap", reqTitle: "Sa w dwe gen anvan", tipsTitle: "Konsèy pou pi vit",
+      copy: "Kopye", copied: "Kopye!",
+      tipItems: [
+        "Pou <b>ATI</b>: ou bezwen <b>RUT</b> + <b>modpas entènèt</b> (obligatwa).",
+        "Chanje <b>lang</b> nan kòmansman si sa disponib (Espayòl / Anglè / Kreyòl).",
+        "Aktive <b>mòd granmoun aje</b> pou tèks pi gwo.",
+        "Chwazi <b>“Enprime”</b> nan fen an si ou bezwen resi."
+      ],
+      footerNote: "Gid sa a se pou ede oryante. Ekran yo ka chanje, men lojik la menm.",
+      badgeWhere: (w)=>`✅ Fè li nan: ${w}`,
+      badgeHelp: "Si ou pa ka fini sou machin nan, mande pèsonèl la ede w",
+      all: "Wè tout", cr: "ATI", ce: "Kès Express",
+      notePrefix: "Nòt: "
+    }
+  };
+
+  const elLang = document.getElementById("lang");
+  const elSenior = document.getElementById("seniorMode");
+  const elSearch = document.getElementById("search");
+  const elProcedure = document.getElementById("procedure");
+  const elChannel = document.getElementById("channel");
+  const elChannelQuick = document.getElementById("channelQuick");
+  const elBadges = document.getElementById("badges");
+
+  const elWhereTag = document.getElementById("whereTag");
+  const elTitle = document.getElementById("title");
+  const elDesc = document.getElementById("desc");
+  const elReqList = document.getElementById("reqList");
+  const elSteps = document.getElementById("steps");
+  const elNote = document.getElementById("note");
+  const copyBtn = document.getElementById("copyBtn");
+
+  function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+  function t(){ return I18N[elLang.value] || I18N.es; }
+
+  const REQ_ATI = {
+    es:["RUT", "Clave de Internet (obligatoria)", "Opcional: activar modo Adulto Mayor", "Opcional: cambiar idioma (ES/EN/Creole)"],
+    en:["RUT (ID)", "Internet password (required)", "Optional: Senior mode", "Optional: language switch (ES/EN/Creole)"],
+    ht:["RUT (ID)", "Modpas entènèt (obligatwa)", "Opsyonèl: mòd granmoun aje", "Opsyonèl: chanje lang (ES/EN/Kreyòl)"]
+  };
+  const REQ_CE = {
+    es:["Seguir instrucciones en pantalla", "Tarjeta/PIN o verificación (si aplica)", "Efectivo/cheque según trámite"],
+    en:["Follow on-screen instructions", "Card/PIN or verification (if applicable)", "Cash/cheque depending on transaction"],
+    ht:["Swiv etap sou ekran an", "Kat/PIN oswa verifikasyon", "Lajan/chek selon sèvis la"]
+  };
+
+  function makeProc({id, channel, name, desc, where, badges=[], req, steps, note}){
+    return {id, channel, name, desc, where, badges, req, steps, note};
+  }
+  function makeATI(o){ return makeProc({...o, channel:"consulta_rapida", where:{es:"ATI (Consulta Rápida)",en:"ATI (Quick Consultation)",ht:"ATI"}, req: REQ_ATI}); }
+  function makeCE(o){ return makeProc({...o, channel:"caja_express", where:{es:"Caja Express",en:"Express Teller",ht:"Kès Express"}, req: REQ_CE}); }
+
+  const PROCEDURES = [
+    // Caja Express
+    makeCE({
+      id:"ce_deposito_billetes_2m",
+      name:{es:"Depósito en efectivo hasta $2.000.000 (solo billetes)",en:"Cash deposit up to $2,000,000 (bills only)",ht:"Depo lajan jiska $2,000,000 (bilten sèlman)"},
+      desc:{es:"Depósito de efectivo (solo billetes) con límite $2.000.000.",en:"Cash deposit (bills only) limit $2,000,000.",ht:"Depo lajan (bilten sèlman) limit $2,000,000."},
+      steps:{
+        es:["Selecciona “Depósitos”.","Elige “Depósito en efectivo”.","Ingresa cuenta destino o selecciona si aparece.","Inserta billetes (hasta $2.000.000).","Confirma monto.","Finaliza e imprime comprobante."],
+        en:["Select “Deposits”.","Choose “Cash deposit”.","Enter/select destination account.","Insert bills (up to $2,000,000).","Confirm amount.","Finish and print receipt."],
+        ht:["Chwazi “Depo”.","Chwazi “Depo lajan”.","Antre/chwazi kont destinasyon.","Mete bilten yo (jiska $2,000,000).","Konfime montan an.","Fini epi enprime resi a."]
+      },
+      note:{es:"Si llevas monedas, este equipo normalmente no las recibe.",en:"Coins are usually not accepted.",ht:"Pyès monnen anjeneral pa aksepte."},
+      badges:["Depósitos"]
+    }),
+    makeCE({
+      id:"ce_deposito_cheque_50m",
+      name:{es:"Depósito con cheque hasta $50.000.000",en:"Cheque deposit up to $50,000,000",ht:"Depo chek jiska $50,000,000"},
+      desc:{es:"Depósito con cheque con límite $50.000.000.",en:"Cheque deposit limit $50,000,000.",ht:"Depo ak chek limit $50,000,000."},
+      steps:{
+        es:["Selecciona “Depósitos”.","Elige “Depósito con cheque”.","Ingresa cuenta destino.","Inserta o escanea cheque según instrucción.","Confirma datos.","Finaliza e imprime comprobante."],
+        en:["Select “Deposits”.","Choose “Cheque deposit”.","Enter destination account.","Insert/scan cheque as instructed.","Confirm details.","Finish and print receipt."],
+        ht:["Chwazi “Depo”.","Chwazi “Depo ak chek”.","Antre kont destinasyon.","Mete/eskanne chek la jan yo mande.","Konfime done yo.","Fini epi enprime resi a."]
+      },
+      note:{es:"Disponibilidad depende del equipo y validación del cheque.",en:"Availability depends on device and cheque validation.",ht:"Sa depann de machin nan ak verifikasyon chek la."},
+      badges:["Depósitos"]
+    }),
+    makeCE({
+      id:"ce_pago_tc_efectivo",
+      name:{es:"Pago Tarjeta de Crédito en efectivo",en:"Pay credit card in cash",ht:"Peye kat kredi an lajan"},
+      desc:{es:"Pago de tarjeta de crédito usando efectivo.",en:"Pay credit card using cash.",ht:"Peye kat kredi ak lajan."},
+      steps:{
+        es:["Selecciona “Pagos”.","Elige “Pago Tarjeta de Crédito en efectivo”.","Ingresa RUT o selecciona producto si aparece.","Inserta billetes.","Confirma pago.","Imprime comprobante."],
+        en:["Select “Payments”.","Choose “Credit card payment (cash)”.","Enter RUT / select product.","Insert bills.","Confirm payment.","Print receipt."],
+        ht:["Chwazi “Peman”.","Chwazi “Peman kat kredi (lajan)”.","Antre RUT / chwazi pwodwi.","Mete bilten yo.","Konfime peman.","Enprime resi a."]
+      },
+      note:{es:"Si el pago requiere cupón, puedes imprimirlo primero en ATI.",en:"If coupon needed, print it on ATI first.",ht:"Si ou bezwen koupon, enprime li sou ATI anvan."},
+      badges:["Pagos"]
+    }),
+    makeCE({
+      id:"ce_pago_tc_cheque",
+      name:{es:"Pago de Tarjeta de Crédito con cheque",en:"Pay credit card by cheque",ht:"Peye kat kredi ak chek"},
+      desc:{es:"Pago de tarjeta de crédito usando cheque.",en:"Pay credit card using cheque.",ht:"Peye kat kredi ak chek."},
+      steps:{
+        es:["Selecciona “Pagos”.","Elige “Pago Tarjeta de Crédito con cheque”.","Ingresa datos solicitados.","Inserta/escanea cheque según instrucción.","Confirma.","Imprime comprobante."],
+        en:["Select “Payments”.","Choose “Credit card payment (cheque)”.","Enter requested details.","Insert/scan cheque as instructed.","Confirm.","Print receipt."],
+        ht:["Chwazi “Peman”.","Chwazi “Peman kat kredi (chek)”.","Antre done yo mande.","Mete/eskanne chek la.","Konfime.","Enprime resi a."]
+      },
+      note:{es:"Sujeto a validación del cheque.",en:"Subject to cheque validation.",ht:"Depann de verifikasyon chek la."},
+      badges:["Pagos"]
+    }),
+    makeCE({
+      id:"ce_pago_consumo_efectivo_cheque",
+      name:{es:"Pago Crédito de Consumo (efectivo o cheque)",en:"Pay consumer loan (cash or cheque)",ht:"Peye kredi konsomasyon (lajan oswa chek)"},
+      desc:{es:"Pago de crédito de consumo con efectivo o cheque.",en:"Pay consumer loan with cash/cheque.",ht:"Peye kredi konsomasyon ak lajan/chek."},
+      steps:{
+        es:["Selecciona “Pagos”.","Elige “Pago crédito de consumo”.","Selecciona “Efectivo” o “Cheque”.","Ingresa/selecciona crédito.","Realiza pago (billetes o cheque).","Finaliza e imprime comprobante."],
+        en:["Select “Payments”.","Choose “Consumer loan payment”.","Choose “Cash” or “Cheque”.","Select the loan.","Pay (bills or cheque).","Finish and print receipt."],
+        ht:["Chwazi “Peman”.","Chwazi “Peman kredi konsomasyon”.","Chwazi “Lajan” oswa “Chek”.","Chwazi kredi a.","Peye (bilten oswa chek).","Fini epi enprime resi a."]
+      },
+      note:{es:"Si no aparece el crédito, pide apoyo al personal.",en:"If loan doesn’t appear, ask staff.",ht:"Si kredi a pa parèt, mande pèsonèl la."},
+      badges:["Pagos"]
+    }),
+    makeCE({
+      id:"ce_cobro_vale_vista_efectivo",
+      name:{es:"Cobro de Vale Vista en efectivo",en:"Cash Vale Vista collection",ht:"Reklame Vale Vista an lajan"},
+      desc:{es:"Cobro de vale vista y entrega en efectivo.",en:"Collect Vale Vista and receive cash.",ht:"Reklame Vale Vista epi resevwa lajan."},
+      steps:{
+        es:["Selecciona “Cobros”.","Elige “Cobro vale vista en efectivo”.","Ingresa datos solicitados (si aplica).","Sigue verificación del equipo.","Retira efectivo si el equipo lo entrega o sigue instrucciones.","Imprime comprobante."],
+        en:["Select “Collections”.","Choose “Vale Vista cash collection”.","Enter requested details (if any).","Follow verification steps.","Withdraw cash if dispensed or follow instructions.","Print receipt."],
+        ht:["Chwazi “Kob”.","Chwazi “Vale Vista an lajan”.","Antre done yo mande.","Swiv verifikasyon an.","Pran lajan an si machin nan bay li.","Enprime resi a."]
+      },
+      note:{es:"Puede requerir validación adicional. Si falla, pedir apoyo.",en:"May require extra validation.",ht:"Ka mande plis verifikasyon."},
+      badges:["Cobros"]
+    }),
+    makeCE({
+      id:"ce_cobro_vale_vista_abono",
+      name:{es:"Cobro Vale Vista con abono a Cuenta Vista/Corriente",en:"Vale Vista collection with deposit to account",ht:"Vale Vista + mete sou kont"},
+      desc:{es:"Cobro de vale vista con abono a cuenta (vista/corriente).",en:"Collect Vale Vista and deposit into account.",ht:"Reklame Vale Vista epi mete sou kont."},
+      steps:{
+        es:["Selecciona “Cobros”.","Elige “Cobro vale vista con abono”.","Ingresa/selecciona cuenta destino.","Confirma operación.","Finaliza e imprime comprobante."],
+        en:["Select “Collections”.","Choose “Vale Vista + deposit”.","Enter/select destination account.","Confirm.","Finish and print receipt."],
+        ht:["Chwazi “Kob”.","Chwazi “Vale Vista + depo”.","Antre/chwazi kont destinasyon.","Konfime.","Fini epi enprime resi a."]
+      },
+      note:{es:"Más rápido que efectivo si el cliente tiene cuenta.",en:"Often faster than cash if customer has account.",ht:"Souvan pi vit pase lajan si gen kont."},
+      badges:["Cobros"]
+    }),
+    makeCE({
+      id:"ce_giro_avance_tc_400k_tarjeta",
+      name:{es:"Giros y avances TC hasta $400.000 (con tarjeta)",en:"Cash withdrawal/advance up to $400,000 (with card)",ht:"Retrè/avans jiska $400,000 (ak kat)"},
+      desc:{es:"Giro/avance con tarjeta (límite indicado en señalética).",en:"Withdrawal/advance with card (limit as shown).",ht:"Retrè/avans ak kat (limit jan li ekri)."},
+      steps:{
+        es:["Selecciona “Giros”.","Elige “Giro/avance con tarjeta”.","Ingresa monto (hasta $400.000).","Valida con tarjeta/PIN.","Retira efectivo.","Imprime comprobante."],
+        en:["Select “Withdrawals”.","Choose “With card”.","Enter amount (up to $400,000).","Validate with card/PIN.","Take cash.","Print receipt."],
+        ht:["Chwazi “Retrè”.","Chwazi “Avèk kat”.","Antre montan (jiska $400,000).","Valide ak kat/PIN.","Pran lajan an.","Enprime resi a."]
+      },
+      note:{es:"Límites pueden variar por cliente/seguridad.",en:"Limits may vary by customer/security.",ht:"Limit yo ka varye."},
+      badges:["Giros"]
+    }),
+    makeCE({
+      id:"ce_giro_avance_tc_800k_ci_biometria",
+      name:{es:"Giros y avances TC hasta $800.000 (C.I. + biometría)",en:"Cash withdrawal/advance up to $800,000 (ID + biometrics)",ht:"Retrè/avans jiska $800,000 (ID + biyometri)"},
+      desc:{es:"Giro/avance con C.I. más biometría (límite indicado).",en:"Withdrawal/advance with ID + biometrics (limit shown).",ht:"Retrè/avans ak ID + biyometri."},
+      steps:{
+        es:["Selecciona “Giros”.","Elige opción “C.I. + biometría”.","Ingresa monto (hasta $800.000).","Realiza verificación biométrica si se solicita.","Retira efectivo.","Imprime comprobante."],
+        en:["Select “Withdrawals”.","Choose “ID + biometrics”.","Enter amount (up to $800,000).","Complete biometric verification if prompted.","Take cash.","Print receipt."],
+        ht:["Chwazi “Retrè”.","Chwazi “ID + biyometri”.","Antre montan (jiska $800,000).","Fè verifikasyon biyometrik si yo mande.","Pran lajan an.","Enprime resi a."]
+      },
+      note:{es:"Si biometría falla, pedir apoyo al personal.",en:"If biometrics fail, ask staff.",ht:"Si biyometri pa mache, mande pèsonèl la."},
+      badges:["Giros"]
+    }),
+
+        // ATI (Consulta Rápida) — ingreso con RUT + Clave de Internet (obligatoria)
+    makeATI({
+      name: "Ingreso a Consulta Rápida (login con RUT y Clave Internet)",
+      category: "Acceso",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["En la pantalla de inicio, toca “Ingresar”.", "Escribe tu RUT (sin puntos) y tu Clave de Internet.", "Confirma y espera el menú principal."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Cambiar idioma (Español / Inglés / Creole)",
+      category: "Accesibilidad",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["No requiere sesión (si aparece en pantalla inicial). Si no, cambia desde el menú."],
+      steps: ["En la pantalla inicial o menú, busca el icono de idioma (globo/idioma).", "Selecciona: Español, English o Kreyòl.", "Confirma: la pantalla cambia inmediatamente."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Activar “Modo Adulto Mayor”",
+      category: "Accesibilidad",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["Disponible en el equipo si está habilitado en la configuración."],
+      steps: ["En la pantalla inicial o menú, selecciona “Adulto Mayor”.", "Confirma: aumenta tamaño de letra y simplifica botones.", "Para volver, desactiva la opción desde el menú."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Solicitud o desbloqueo de claves de internet",
+      category: "Seguridad",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "En el menú, busca “Seguridad / Claves”.", "Selecciona “Solicitud o desbloqueo de claves”.", "Sigue las instrucciones en pantalla y finaliza (puede emitir comprobante)."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Imprimir cupón de pago de cuota de crédito",
+      category: "Cupones",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Selecciona “Cupones”.", "Elige “Imprimir cupón de pago de cuota de crédito”.", "Revisa los datos y presiona “Imprimir”. Retira el cupón."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Obtener cartolas de Tarjetas de Crédito / Cuenta Corriente / Cuenta Vista",
+      category: "Cartolas",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Cartolas / Estados de cuenta”.", "Elige el producto (TC / Corriente / Vista) y el período disponible.", "Confirma e imprime o visualiza en pantalla según opción."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Solicitar Avance de Tarjetas de Crédito",
+      category: "Pagos y avances",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Selecciona “Pagos y avances”.", "Elige “Solicitar avance de Tarjetas de Crédito”.", "Selecciona monto y cuenta destino (si aplica).", "Confirma y guarda el comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Saldo Cuenta Corriente Moneda Nacional",
+      category: "Saldo",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Saldo”.", "Selecciona “Saldo Cuenta Corriente Moneda Nacional”.", "Revisa el saldo en pantalla. Si existe opción, imprime comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Saldo Cuenta Corriente Moneda Extranjera",
+      category: "Saldo",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Saldo”.", "Selecciona “Saldo Cuenta Corriente Moneda Extranjera”.", "Revisa el saldo en pantalla. Si existe opción, imprime comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Saldo Cuenta Vista",
+      category: "Saldo",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Saldo”.", "Selecciona “Saldo Cuenta Vista”.", "Revisa el saldo en pantalla. Si existe opción, imprime comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Saldo Cuenta Ahorro",
+      category: "Saldo",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Saldo”.", "Selecciona “Saldo Cuenta Ahorro”.", "Revisa el saldo en pantalla. Si existe opción, imprime comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Saldo Tarjeta de Crédito",
+      category: "Saldo",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Saldo”.", "Selecciona “Saldo Tarjeta de Crédito”.", "Revisa el saldo en pantalla. Si existe opción, imprime comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Cupón de Pago Tarjeta de Crédito",
+      category: "Cupones",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Cupones”.", "Selecciona “Cupón de Pago Tarjeta de Crédito”.", "Confirma los datos y presiona “Imprimir”. Retira el documento."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Cupón de Pago Crédito de Consumo",
+      category: "Cupones",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Cupones”.", "Selecciona “Cupón de Pago Crédito de Consumo”.", "Confirma los datos y presiona “Imprimir”. Retira el documento."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Cupón de Pago Crédito Hipotecario",
+      category: "Cupones",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Cupones”.", "Selecciona “Cupón de Pago Crédito Hipotecario”.", "Confirma los datos y presiona “Imprimir”. Retira el documento."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Cupón de Giro Cuenta Vista",
+      category: "Cupones",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Cupones”.", "Selecciona “Cupón de Giro Cuenta Vista”.", "Confirma los datos y presiona “Imprimir”. Retira el documento."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Cupón de Giro Cuenta de Ahorro",
+      category: "Cupones",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Cupones”.", "Selecciona “Cupón de Giro Cuenta de Ahorro”.", "Confirma los datos y presiona “Imprimir”. Retira el documento."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Cupón de Depósito Cuenta Vista",
+      category: "Cupones",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Cupones”.", "Selecciona “Cupón de Depósito Cuenta Vista”.", "Confirma los datos y presiona “Imprimir”. Retira el documento."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Cupón de Depósito Cuenta de Ahorro",
+      category: "Cupones",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Cupones”.", "Selecciona “Cupón de Depósito Cuenta de Ahorro”.", "Confirma los datos y presiona “Imprimir”. Retira el documento."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Cupón de Avance Tarjeta de Crédito",
+      category: "Cupones",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Cupones”.", "Selecciona “Cupón de Avance Tarjeta de Crédito”.", "Confirma los datos y presiona “Imprimir”. Retira el documento."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Cupón de Pago Leasing",
+      category: "Cupones",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Cupones”.", "Selecciona “Cupón de Pago Leasing”.", "Confirma los datos y presiona “Imprimir”. Retira el documento."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Comprobante Compra Moneda Extranjera",
+      category: "Cupones",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Cupones”.", "Selecciona “Comprobante Compra Moneda Extranjera”.", "Confirma los datos y presiona “Imprimir”. Retira el documento."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Pago en Línea - Línea de Crédito",
+      category: "Pagos y avances",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Pagos y avances”.", "Selecciona “Pago en Línea - Línea de Crédito”.", "Sigue los pasos en pantalla: elige producto, monto y confirma.", "Guarda o imprime el comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Pago en Línea - Tarjeta de Crédito Deuda Nacional",
+      category: "Pagos y avances",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Pagos y avances”.", "Selecciona “Pago en Línea - Tarjeta de Crédito Deuda Nacional”.", "Sigue los pasos en pantalla: elige producto, monto y confirma.", "Guarda o imprime el comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Pago en Línea - Tarjeta de Crédito Deuda Internacional",
+      category: "Pagos y avances",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Pagos y avances”.", "Selecciona “Pago en Línea - Tarjeta de Crédito Deuda Internacional”.", "Sigue los pasos en pantalla: elige producto, monto y confirma.", "Guarda o imprime el comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Pago en Línea - Crédito de Consumo",
+      category: "Pagos y avances",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Pagos y avances”.", "Selecciona “Pago en Línea - Crédito de Consumo”.", "Sigue los pasos en pantalla: elige producto, monto y confirma.", "Guarda o imprime el comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Avance Tarjeta de Crédito (normal y cuotas) Abono en Cuenta Corriente / Vista",
+      category: "Pagos y avances",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Pagos y avances”.", "Selecciona “Avance Tarjeta de Crédito (normal y cuotas) Abono en Cuenta Corriente / Vista”.", "Sigue los pasos en pantalla: elige producto, monto y confirma.", "Guarda o imprime el comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Compra de Dólares con cargo a Cuenta Corriente y Retiro en Caja",
+      category: "Pagos y avances",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Pagos y avances”.", "Selecciona “Compra de Dólares con cargo a Cuenta Corriente y Retiro en Caja”.", "Sigue los pasos en pantalla: elige producto, monto y confirma.", "Guarda o imprime el comprobante."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Actualizar Teléfono Particular",
+      category: "Actualizar datos",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Actualizar datos”.", "Selecciona “Actualizar Teléfono Particular”.", "Ingresa el dato solicitado, revisa y confirma.", "Guarda el comprobante si se imprime."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Actualizar Teléfono Comercial",
+      category: "Actualizar datos",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Actualizar datos”.", "Selecciona “Actualizar Teléfono Comercial”.", "Ingresa el dato solicitado, revisa y confirma.", "Guarda el comprobante si se imprime."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Actualizar Teléfono Celular",
+      category: "Actualizar datos",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Actualizar datos”.", "Selecciona “Actualizar Teléfono Celular”.", "Ingresa el dato solicitado, revisa y confirma.", "Guarda el comprobante si se imprime."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Actualización de Correo Electrónico",
+      category: "Actualizar datos",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Actualizar datos”.", "Selecciona “Actualización de Correo Electrónico”.", "Ingresa el dato solicitado, revisa y confirma.", "Guarda el comprobante si se imprime."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Reseteo Clave Internet",
+      category: "Seguridad cuenta",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Seguridad cuenta”.", "Selecciona “Reseteo Clave Internet”.", "Sigue las instrucciones en pantalla y finaliza.", "Si se genera documento, imprime y retíralo."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Generación Nueva Clave Internet",
+      category: "Seguridad cuenta",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Seguridad cuenta”.", "Selecciona “Generación Nueva Clave Internet”.", "Sigue las instrucciones en pantalla y finaliza.", "Si se genera documento, imprime y retíralo."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Bloqueo y Reemisión Tarjeta de Crédito",
+      category: "Seguridad cuenta",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Seguridad cuenta”.", "Selecciona “Bloqueo y Reemisión Tarjeta de Crédito”.", "Sigue las instrucciones en pantalla y finaliza.", "Si se genera documento, imprime y retíralo."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Solicitud Bloqueo y Reemisión Tarjeta de Débito (Call Back)",
+      category: "Seguridad cuenta",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Seguridad cuenta”.", "Selecciona “Solicitud Bloqueo y Reemisión Tarjeta de Débito (Call Back)”.", "Sigue las instrucciones en pantalla y finaliza.", "Si se genera documento, imprime y retíralo."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Reseteo de Pinpass Tarjeta de Débito",
+      category: "Seguridad cuenta",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Seguridad cuenta”.", "Selecciona “Reseteo de Pinpass Tarjeta de Débito”.", "Sigue las instrucciones en pantalla y finaliza.", "Si se genera documento, imprime y retíralo."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Consulta Vale Vista Pendiente Cobro",
+      category: "Seguridad cuenta",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Seguridad cuenta”.", "Selecciona “Consulta Vale Vista Pendiente Cobro”.", "Sigue las instrucciones en pantalla y finaliza.", "Si se genera documento, imprime y retíralo."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Consulta Estado Productos Pendiente de Retiro",
+      category: "Seguridad cuenta",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Seguridad cuenta”.", "Selecciona “Consulta Estado Productos Pendiente de Retiro”.", "Sigue las instrucciones en pantalla y finaliza.", "Si se genera documento, imprime y retíralo."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Video Tutoriales de Aplicaciones Banco",
+      category: "Seguridad cuenta",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Seguridad cuenta”.", "Selecciona “Video Tutoriales de Aplicaciones Banco”.", "Sigue las instrucciones en pantalla y finaliza.", "Si se genera documento, imprime y retíralo."],
+      notes: ""
+    }),
+    makeATI({
+      name: "Firma Electrónica Avanzada para Documentos",
+      category: "Seguridad cuenta",
+      where: "Consulta rápida (ATI)",
+      prerequisites: ["RUT del cliente", "Clave de Internet (obligatoria)", "Si el trámite es de tarjeta/cuenta, tener tarjeta o datos a mano"],
+      steps: ["Ingresa con RUT y Clave Internet.", "Entra a “Seguridad cuenta”.", "Selecciona “Firma Electrónica Avanzada para Documentos”.", "Sigue las instrucciones en pantalla y finaliza.", "Si se genera documento, imprime y retíralo."],
+      notes: ""
+    }),
+
+];
+
+  function setText(){
+    const L = t();
+    document.getElementById("hdrTitle").textContent = L.hdrTitle;
+    document.getElementById("hdrSubtitle").textContent = L.hdrSubtitle;
+    document.getElementById("lblLang").textContent = L.lblLang;
+    document.getElementById("lblSenior").textContent = L.lblSenior;
+    document.getElementById("seniorText").textContent = L.seniorText;
+    document.getElementById("lblChannelQuick").textContent = L.lblChannelQuick;
+    document.getElementById("lblSearch").textContent = L.lblSearch;
+    elSearch.placeholder = L.phSearch;
+    document.getElementById("lblProcedure").textContent = L.lblProcedure;
+    document.getElementById("lblChannel").textContent = L.lblChannel;
+    document.getElementById("stepsTitle").textContent = L.stepsTitle;
+    document.getElementById("reqTitle").textContent = L.reqTitle;
+    document.getElementById("tipsTitle").textContent = L.tipsTitle;
+    copyBtn.textContent = L.copy;
+
+    elChannel.options[0].text = L.all;
+    elChannel.options[1].text = L.cr;
+    elChannel.options[2].text = L.ce;
+    elChannelQuick.options[0].text = L.all;
+    elChannelQuick.options[1].text = L.cr;
+    elChannelQuick.options[2].text = L.ce;
+
+    const tips = document.getElementById("tips");
+    tips.innerHTML = "";
+    L.tipItems.forEach(x=>{
+      const li = document.createElement("li");
+      li.innerHTML = x;
+      tips.appendChild(li);
+    });
+    document.getElementById("footerNote").textContent = L.footerNote;
+  }
+
+  function currentFilterChannel(){
+    const q = elChannelQuick.value;
+    const d = elChannel.value;
+    if(d !== "all") return d;
+    return q;
+  }
+
+  function getFilteredProcedures(){
+    const ch = currentFilterChannel();
+    const q = normalize(elSearch.value);
+    return PROCEDURES.filter(p=>{
+      const okCh = (ch==="all") ? true : p.channel===ch;
+      const name = p.name[elLang.value] || p.name.es;
+      const desc = p.desc[elLang.value] || p.desc.es;
+      const okQ = !q || normalize(name).includes(q) || normalize(desc).includes(q);
+      return okCh && okQ;
+    }).sort((a,b)=>{
+      const an = (a.name[elLang.value] || a.name.es);
+      const bn = (b.name[elLang.value] || b.name.es);
+      return an.localeCompare(bn, "es");
+    });
+  }
+
+  function refreshList(){
+    const list = getFilteredProcedures();
+    const prev = elProcedure.value;
+    elProcedure.innerHTML = "";
+    list.forEach(p=>{
+      const opt = document.createElement("option");
+      opt.value = p.id;
+      opt.textContent = (p.name[elLang.value] || p.name.es) + " — " + (p.channel==="consulta_rapida" ? t().cr : t().ce);
+      elProcedure.appendChild(opt);
+    });
+
+    if(list.length===0){
+      elWhereTag.textContent = "—";
+      elTitle.textContent = (elLang.value==="en") ? "No results" : (elLang.value==="ht") ? "Pa gen rezilta" : "Sin resultados";
+      elDesc.textContent = (elLang.value==="en") ? "Try another search." : (elLang.value==="ht") ? "Eseye lòt mo." : "Prueba con otra búsqueda.";
+      elReqList.innerHTML = ""; elSteps.innerHTML = ""; elNote.textContent = "";
+      elBadges.innerHTML = "";
+      return;
+    }
+
+    const keep = list.find(x=>x.id===prev) ? prev : list[0].id;
+    elProcedure.value = keep;
+    renderSelected();
+  }
+
+  function renderSelected(){
+    const L = t();
+    const id = elProcedure.value;
+    const p = PROCEDURES.find(x=>x.id===id);
+    if(!p) return;
+
+    elBadges.innerHTML = "";
+    const b1 = document.createElement("div");
+    b1.className = "pill ok";
+    b1.textContent = L.badgeWhere(p.where[elLang.value] || p.where.es);
+    elBadges.appendChild(b1);
+
+    const b2 = document.createElement("div");
+    b2.className = "pill info";
+    b2.textContent = (p.channel==="consulta_rapida") ? L.cr : L.ce;
+    elBadges.appendChild(b2);
+
+    if(p.badges && p.badges.length){
+      p.badges.forEach(tag=>{
+        const b = document.createElement("div");
+        b.className = "pill";
+        b.textContent = tag;
+        elBadges.appendChild(b);
+      });
+    }
+
+    const b3 = document.createElement("div");
+    b3.className = "pill warn";
+    b3.textContent = L.badgeHelp;
+    elBadges.appendChild(b3);
+
+    elWhereTag.textContent = (p.channel==="consulta_rapida") ? L.cr : L.ce;
+    elTitle.textContent = p.name[elLang.value] || p.name.es;
+    elDesc.textContent = p.desc[elLang.value] || p.desc.es;
+
+    elReqList.innerHTML = "";
+    (p.req[elLang.value] || p.req.es).forEach(x=>{
+      const li = document.createElement("li");
+      li.innerHTML = x;
+      elReqList.appendChild(li);
+    });
+
+    elSteps.innerHTML = "";
+    (p.steps[elLang.value] || p.steps.es).forEach(x=>{
+      const li = document.createElement("li");
+      li.innerHTML = x;
+      elSteps.appendChild(li);
+    });
+
+    const note = (p.note && (p.note[elLang.value] || p.note.es)) || "";
+    elNote.textContent = note ? (L.notePrefix + note.replace(/<[^>]*>?/gm,'')) : "";
+  }
+
+  function syncSenior(){
+    document.body.classList.toggle("senior", !!elSenior.checked);
+  }
+
+  copyBtn.addEventListener("click", async ()=>{
+    const p = PROCEDURES.find(x=>x.id===elProcedure.value);
+    if(!p) return;
+    const name = p.name[elLang.value] || p.name.es;
+    const where = p.where[elLang.value] || p.where.es;
+    const req = (p.req[elLang.value] || p.req.es).map(x=>"- "+x.replace(/<[^>]*>?/gm,'')).join("\n");
+    const steps = (p.steps[elLang.value] || p.steps.es).map((x,i)=>`${i+1}. ${x.replace(/<[^>]*>?/gm,'')}`).join("\n");
+    const text = `${name}\nDebes hacerlo aquí: ${where}\n\nRequisitos:\n${req}\n\nPaso a paso:\n${steps}`;
+    try{
+      await navigator.clipboard.writeText(text);
+      const old = copyBtn.textContent;
+      copyBtn.textContent = t().copied;
+      setTimeout(()=>copyBtn.textContent=old, 900);
+    }catch(e){
+      alert(text);
+    }
+  });
+
+  elLang.addEventListener("change", ()=>{ setText(); refreshList(); });
+  elSenior.addEventListener("change", syncSenior);
+  elSearch.addEventListener("input", refreshList);
+  elProcedure.addEventListener("change", renderSelected);
+  elChannel.addEventListener("change", refreshList);
+  elChannelQuick.addEventListener("change", refreshList);
+
+  setText();
+  syncSenior();
+  refreshList();
+</script>
+</body>
+</html>
