@@ -1,245 +1,885 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Guía de Trámites – Autoatención</title>
-  <style>
-    :root { --pad: 16px; --radius: 14px; }
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background:#f6f7f9; color:#111; }
-    header { padding: 18px var(--pad); background:#fff; border-bottom:1px solid #e6e8ee; position: sticky; top: 0; }
-    h1 { margin:0; font-size: 18px; }
-    main { padding: var(--pad); max-width: 760px; margin: 0 auto; }
-    .card { background:#fff; border:1px solid #e6e8ee; border-radius: var(--radius); padding: var(--pad); margin-bottom: 12px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
-    label { font-weight: 600; display:block; margin-bottom: 8px; }
-    select, input { width: 100%; padding: 12px; border-radius: 12px; border:1px solid #d6dae6; font-size: 16px; background:#fff; }
-    .row { display:grid; grid-template-columns: 1fr; gap: 10px; }
-    .badge { display:inline-block; padding: 6px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; }
-    .ok { background:#e9f8ef; color:#0b6b2f; border:1px solid #bfe8cd; }
-    .warn { background:#fff4e5; color:#8a4b00; border:1px solid #ffd8a8; }
-    .no { background:#fdecec; color:#8a1f1f; border:1px solid #f6c0c0; }
-    ol { margin: 8px 0 0 20px; }
-    .muted { color:#5a6475; font-size: 13px; margin-top: 6px; }
-    .small { font-size: 12px; color:#5a6475; }
-    .btn { display:inline-flex; gap:8px; align-items:center; border:1px solid #d6dae6; padding: 10px 12px; border-radius: 12px; background:#fff; cursor:pointer; font-weight: 600; }
-    .btn:active { transform: translateY(1px); }
-    .grid2 { display:grid; grid-template-columns: 1fr; gap: 10px; }
-    @media (min-width: 640px) { .grid2 { grid-template-columns: 1fr 1fr; } }
-    .hr { height:1px; background:#eef0f5; margin: 12px 0; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Guía de Trámites – ATI / Consulta Express</title>
+<style>
+  :root{
+    --blue:#0b5ed7;
+    --blue2:#0a4fb8;
+    --bg:#ffffff;
+    --muted:#6b7280;
+    --card:#f6f9ff;
+    --border:#dbe7ff;
+    --ok:#0f8a3c;
+    --warn:#b42318;
+    --shadow: 0 10px 30px rgba(11,94,215,.12);
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color:#0b1220;
+  }
+  header{
+    position:sticky; top:0; z-index:2;
+    background: linear-gradient(90deg, var(--blue), var(--blue2));
+    color:#fff;
+    padding:16px 18px;
+    box-shadow: 0 6px 20px rgba(11,94,215,.18);
+  }
+  header .title{font-size:18px; font-weight:800; letter-spacing:.2px}
+  header .sub{font-size:12px; opacity:.9; margin-top:2px}
+  main{max-width:920px; margin:0 auto; padding:18px}
+  .grid{display:grid; gap:14px}
+  @media(min-width:860px){ .grid{grid-template-columns: 1.2fr .8fr} }
+  .card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding:16px;
+  }
+  .card h2{margin:0 0 10px 0; font-size:16px}
+  .muted{color:var(--muted); font-size:13px; line-height:1.35}
+  label{display:block; font-weight:700; font-size:13px; margin:10px 0 6px}
+  select, input{
+    width:100%;
+    padding:12px 12px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:#fff;
+    font-size:14px;
+    outline:none;
+  }
+  input:focus, select:focus{border-color: rgba(11,94,215,.6); box-shadow:0 0 0 4px rgba(11,94,215,.10)}
+  .row{display:flex; gap:10px; align-items:center}
+  .btn{
+    appearance:none; border:none; cursor:pointer;
+    padding:12px 14px; border-radius:12px;
+    background: var(--blue);
+    color:#fff; font-weight:800; font-size:14px;
+    width:100%;
+  }
+  .btn:hover{background:var(--blue2)}
+  .pill{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:12px; font-weight:800;
+    padding:6px 10px; border-radius:999px;
+    border:1px solid var(--border);
+    background:#fff;
+  }
+  .pill.ati{border-color: rgba(11,94,215,.25); }
+  .pill.express{border-color: rgba(15,138,60,.25); }
+  .pill .dot{width:8px; height:8px; border-radius:999px; background:#999}
+  .pill.ati .dot{background: var(--blue)}
+  .pill.express .dot{background: var(--ok)}
+  .kpi{
+    display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:10px
+  }
+  .kpi .box{
+    background:#fff; border:1px solid var(--border); border-radius:14px; padding:10px
+  }
+  .kpi .box b{display:block; font-size:12px}
+  .kpi .box span{display:block; font-size:13px; color:var(--muted); margin-top:2px; line-height:1.25}
+  .steps{margin:10px 0 0 0; padding-left:18px}
+  .steps li{margin:8px 0; line-height:1.3}
+  .note{
+    margin-top:10px;
+    background:#fff;
+    border:1px dashed rgba(11,94,215,.35);
+    border-radius:14px;
+    padding:10px;
+    font-size:13px;
+    color:#17324d;
+  }
+  .mini{font-size:12px; color:var(--muted)}
+  .footer{
+    margin-top:14px; font-size:12px; color:var(--muted);
+  }
+  .divider{height:1px; background:var(--border); margin:12px 0}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Guía rápida de trámites (ATI / Caja Express)</h1>
-    <div class="small">Escanea el QR, elige tu trámite y sigue los pasos.</div>
-  </header>
+<header>
+  <div class="title">Guía rápida de trámites (Sucursal) – ATI / Consulta Express</div>
+  <div class="sub">Escanea el QR, elige tu trámite y la página te dice dónde hacerlo + paso a paso.</div>
+</header>
 
-  <main>
-    <div class="card">
-      <div class="grid2">
-        <div>
-          <label for="tramite">¿Qué trámite quieres realizar?</label>
-          <select id="tramite"></select>
-          <div class="muted" id="desc"></div>
-        </div>
-        <div>
-          <label for="monto">Monto (solo si aplica)</label>
-          <input id="monto" type="number" inputmode="numeric" placeholder="Ej: 50000" min="0" />
-          <div class="muted">Si tu trámite no tiene monto, déjalo vacío.</div>
-        </div>
+<main>
+  <div class="grid">
+    <section class="card">
+      <h2>1) Selecciona tu trámite</h2>
+      <div class="muted">La lista incluye <b>todos</b> los trámites disponibles en el <b>ATI (Consulta Rápida)</b> y en <b>Consulta Express (Caja Express)</b>.</div>
+
+      <label for="q">Buscar (opcional)</label>
+      <input id="q" type="text" placeholder="Ej: cartola, cupón, depósito, vale vista, bloqueo..." />
+
+      <label for="tramite">Trámite</label>
+      <select id="tramite"></select>
+
+      <div style="margin-top:10px">
+        <button class="btn" id="btnMostrar">Mostrar guía</button>
       </div>
 
-      <div class="hr"></div>
-
-      <div id="resultado" class="card" style="margin:0; border-style:dashed;"></div>
-
-      <div class="hr"></div>
-
-      <button class="btn" id="btnShare" type="button">Compartir instrucciones</button>
-      <span class="small"> (opcional)</span>
-    </div>
-
-    <div class="card">
-      <b>Nota para la sucursal</b>
-      <div class="muted">
-        Esta página se puede ajustar: agregar trámites, cambiar montos máximos y editar pasos.
-        Busca en el código la sección <span class="mono">TRAMITES</span>.
+      <div class="footer">
+        Consejo: si estás en un día de alta afluencia, elegir el canal correcto (ATI/Express) puede bajar tu espera sin “hacer fila” en caja.
       </div>
+    </section>
+
+    <aside class="card">
+      <h2>Requisitos y opciones del ATI</h2>
+      <div class="muted">En el <b>ATI (Consulta Rápida)</b> normalmente debes ingresar con <b>RUT + Clave Internet</b>. Sin clave, varios trámites no estarán disponibles.</div>
+      <div class="kpi">
+        <div class="box"><b>Ingreso</b><span>RUT + Clave Internet</span></div>
+        <div class="box"><b>Idiomas</b><span>Español / Inglés / Creole</span></div>
+        <div class="box"><b>Modo</b><span>Opción “Adulto Mayor” (interfaz más simple)</span></div>
+        <div class="box"><b>Tip</b><span>Si fallas al ingresar, valida teclado, RUT y clave (mayúsculas / números).</span></div>
+      </div>
+      <div class="note">
+        <b>Importante:</b> Si el trámite te pide imprimir (cartolas/cupones), revisa que haya papel y retira el documento antes de salir.
+      </div>
+    </aside>
+  </div>
+
+  <section class="card" id="resultado" style="margin-top:14px; display:none">
+    <h2>2) Resultado</h2>
+    <div class="row" style="justify-content:space-between; flex-wrap:wrap; gap:10px">
+      <div>
+        <div style="font-weight:900; font-size:16px" id="rNombre">—</div>
+        <div class="mini" id="rCategoria">—</div>
+      </div>
+      <div id="rPill"></div>
     </div>
-  </main>
 
-  <script>
-    // === CONFIGURACIÓN ===
-    // Ajusta "montoMaxExpress" a la política real de tu Caja Express.
-    // Ajusta trámites y pasos según tu sucursal.
-    const montoMaxExpress = 200000; // <-- EJEMPLO (CLP). Cambia a tu monto real.
+    <div class="divider"></div>
 
-    const TRAMITES = [
-      {
-        id: "cartola",
-        nombre: "Obtener cartola / movimientos",
-        descripcion: "Imprime o revisa tus movimientos.",
-        regla: () => ({ canal: "ATI", etiqueta: "Se puede en ATI", tipo: "ok" }),
-        pasos: [
-          "En ATI, selecciona “Cartolas / Movimientos”.",
-          "Ingresa tu RUT (y clave si corresponde).",
-          "Elige el periodo (últimos movimientos o rango).",
-          "Confirma e imprime o visualiza."
-        ]
-      },
-      {
-        id: "clave",
-        nombre: "Recuperar / generar clave",
-        descripcion: "Clave para uso de servicios o banca.",
-        regla: () => ({ canal: "ATI", etiqueta: "Se puede en ATI", tipo: "ok" }),
-        pasos: [
-          "En ATI, elige “Claves / Seguridad”.",
-          "Selecciona “Recuperar/Generar clave”.",
-          "Sigue las instrucciones en pantalla y confirma.",
-          "Guarda tu clave en un lugar seguro."
-        ]
-      },
-      {
-        id: "consultas",
-        nombre: "Consultas rápidas (saldo / productos)",
-        descripcion: "Consultas sin operación de dinero.",
-        regla: () => ({ canal: "CONSULTA_EXPRESS", etiqueta: "Se puede en Consulta Express", tipo: "ok" }),
-        pasos: [
-          "En Consulta Express, selecciona “Consultas”.",
-          "Ingresa tu RUT (y validación si aparece).",
-          "Revisa saldo/productos y finaliza."
-        ]
-      },
-      {
-        id: "cobro_vale",
-        nombre: "Cobro de vale / documento (monto)",
-        descripcion: "Cobro de vale u operación con monto. Puede ir a Express si no supera el máximo.",
-        regla: ({ monto }) => {
-          if (monto == null || Number.isNaN(monto)) {
-            return { canal: "DUDOSO", etiqueta: "Ingresa monto para recomendar canal", tipo: "warn" };
-          }
-          if (monto <= montoMaxExpress) {
-            return { canal: "CAJA_EXPRESS", etiqueta: `Se puede en Caja Express (≤ ${montoMaxExpress.toLocaleString("es-CL")} CLP)`, tipo: "ok" };
-          }
-          return { canal: "CAJA", etiqueta: `Debe ir a Caja (supera ${montoMaxExpress.toLocaleString("es-CL")} CLP)`, tipo: "no" };
-        },
-        pasos: [
-          "Si el monto es menor o igual al máximo, usa Caja Express.",
-          "Selecciona “Cobros / Vales” e ingresa los datos solicitados.",
-          "Confirma el monto y retira el comprobante/dinero si aplica.",
-          "Si el monto supera el máximo, saca número para Caja."
-        ]
-      },
-      {
-        id: "banca_linea",
-        nombre: "Ingresar a banca en línea (computador)",
-        descripcion: "Acceder a la banca en línea desde el computador.",
-        regla: () => ({ canal: "PC_BANCA", etiqueta: "Usa el computador de banca en línea", tipo: "ok" }),
-        pasos: [
-          "Dirígete al computador de banca en línea.",
-          "Ingresa a la web del banco e inicia sesión.",
-          "Realiza tu operación y cierra sesión al terminar."
-        ]
-      },
-      {
-        id: "tramite_complejo",
-        nombre: "Trámite complejo / asesoría (ej. bloqueo, reclamo, productos)",
-        descripcion: "Requiere revisión por ejecutivo.",
-        regla: () => ({ canal: "MESON", etiqueta: "Debe ir a Mesón / Ejecutivo", tipo: "no" }),
-        pasos: [
-          "Saca ticket en el tótem de entrada para Mesón/Ejecutivo.",
-          "Espera tu turno y explica tu solicitud.",
-          "Ten tu cédula y antecedentes a mano."
-        ]
-      }
-    ];
+    <div class="muted" style="margin-bottom:6px"><b>Debes hacerlo en:</b></div>
+    <div style="font-weight:900; font-size:15px" id="rDonde">—</div>
 
-    // === UI ===
-    const sel = document.getElementById("tramite");
-    const montoInput = document.getElementById("monto");
-    const resultado = document.getElementById("resultado");
-    const desc = document.getElementById("desc");
-    const btnShare = document.getElementById("btnShare");
+    <div class="note" id="rRequisitos" style="display:none"></div>
 
-    function badge(tipo, texto) {
-      const cls = tipo === "ok" ? "ok" : (tipo === "warn" ? "warn" : "no");
-      return `<span class="badge ${cls}">${texto}</span>`;
+    <div class="muted" style="margin-top:12px"><b>Paso a paso (simple):</b></div>
+    <ol class="steps" id="rPasos"></ol>
+
+    <div class="footer" id="rPie"></div>
+  </section>
+</main>
+
+<script>
+/**
+ * Datos (trámites) – construidos desde el material que compartiste.
+ * Cada item: name, channel (ATI | EXPRESS), category, steps[], prereq[] (opcional)
+ */
+const CHANNELS = {
+  ATI: {
+    label: "ATI (Consulta Rápida)",
+    pillClass: "ati",
+    desc: "Tótem de Consulta Rápida. Ingreso con RUT + Clave Internet."
+  },
+  EXPRESS: {
+    label: "Consulta Express (Caja Express)",
+    pillClass: "express",
+    desc: "Tótem Caja Express para pagos/depósitos/giros/cobros."
+  }
+};
+
+const TRAMITES = [
+  // ===== ATI (Consulta Rápida) =====
+  { name:"Saldo – Cuenta Corriente Moneda Nacional", channel:"ATI", category:"Saldo",
+    steps:[
+      "En la pantalla inicial selecciona idioma (Español / Inglés / Creole) si corresponde.",
+      "Selecciona (opcional) “Modo Adulto Mayor” si lo necesitas.",
+      "Ingresa con tu RUT y Clave Internet.",
+      "En el menú, entra a “Saldo”.",
+      "Elige “Cuenta Corriente Moneda Nacional”.",
+      "Revisa el saldo en pantalla y finaliza la sesión."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Saldo – Cuenta Corriente Moneda Extranjera", channel:"ATI", category:"Saldo",
+    steps:[
+      "Selecciona idioma / Modo Adulto Mayor (opcional).",
+      "Ingresa RUT + Clave Internet.",
+      "Menú → “Saldo”.",
+      "Selecciona “Cuenta Corriente Moneda Extranjera”.",
+      "Revisa el saldo y finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Saldo – Cuenta Vista", channel:"ATI", category:"Saldo",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Saldo”.",
+      "Selecciona “Cuenta Vista”.",
+      "Revisa saldo y cierra sesión."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Saldo – Cuenta de Ahorro", channel:"ATI", category:"Saldo",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Saldo”.",
+      "Selecciona “Cuenta de Ahorro”.",
+      "Revisa saldo y finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Saldo – Tarjeta de Crédito", channel:"ATI", category:"Saldo",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Saldo”.",
+      "Selecciona “Tarjeta de Crédito”.",
+      "Revisa saldo/deuda disponible y finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+
+  { name:"Cupón – Pago Tarjeta de Crédito", channel:"ATI", category:"Cupones",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Cupones”.",
+      "Selecciona “Cupón de Pago Tarjeta de Crédito”.",
+      "Confirma datos (producto / monto si aplica).",
+      "Imprime el cupón y retíralo."
+    ],
+    prereq:["RUT + Clave Internet.", "Que el tótem tenga papel para imprimir."]
+  },
+  { name:"Cupón – Pago Crédito de Consumo", channel:"ATI", category:"Cupones",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Cupones”.",
+      "Selecciona “Cupón de Pago Crédito de Consumo”.",
+      "Confirma y elige imprimir.",
+      "Retira el cupón."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora."]
+  },
+  { name:"Cupón – Pago Crédito Hipotecario", channel:"ATI", category:"Cupones",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Cupones”.",
+      "Selecciona “Cupón de Pago Crédito Hipotecario”.",
+      "Confirma el producto y solicita imprimir.",
+      "Retira el cupón."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora."]
+  },
+  { name:"Cupón – Giro Cuenta Vista", channel:"ATI", category:"Cupones",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Cupones”.",
+      "Selecciona “Cupón de Giro Cuenta Vista”.",
+      "Confirma datos y solicita imprimir.",
+      "Retira el cupón."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora."]
+  },
+  { name:"Cupón – Giro Cuenta de Ahorro", channel:"ATI", category:"Cupones",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Cupones”.",
+      "Selecciona “Cupón de Giro Cuenta de Ahorro”.",
+      "Confirma y manda a imprimir.",
+      "Retira el cupón."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora."]
+  },
+  { name:"Cupón – Depósito Cuenta Vista", channel:"ATI", category:"Cupones",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Cupones”.",
+      "Selecciona “Cupón de Depósito Cuenta Vista”.",
+      "Confirma producto y manda a imprimir.",
+      "Retira el cupón."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora."]
+  },
+  { name:"Cupón – Depósito Cuenta de Ahorro", channel:"ATI", category:"Cupones",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Cupones”.",
+      "Selecciona “Cupón de Depósito Cuenta de Ahorro”.",
+      "Confirma y manda a imprimir.",
+      "Retira el cupón."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora."]
+  },
+  { name:"Cupón – Avance Tarjeta de Crédito", channel:"ATI", category:"Cupones",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Cupones”.",
+      "Selecciona “Cupón de Avance Tarjeta de Crédito”.",
+      "Confirma monto/cupo si corresponde y manda a imprimir.",
+      "Retira el cupón."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora."]
+  },
+  { name:"Cupón – Pago Leasing", channel:"ATI", category:"Cupones",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Cupones”.",
+      "Selecciona “Cupón de Pago Leasing”.",
+      "Confirma y manda a imprimir.",
+      "Retira el cupón."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora."]
+  },
+  { name:"Comprobante – Compra Moneda Extranjera", channel:"ATI", category:"Cupones",
+    steps:[
+      "Ingresa al ATI con RUT + Clave Internet.",
+      "Menú → “Cupones”.",
+      "Selecciona “Comprobante Compra Moneda Extranjera”.",
+      "Confirma datos y elige imprimir.",
+      "Retira el comprobante."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora."]
+  },
+
+  { name:"Pagos en línea – Línea de Crédito", channel:"ATI", category:"Pagos y avances",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Pagos y Avances”.",
+      "Selecciona “Pago en Línea – Línea de Crédito”.",
+      "Confirma el producto y el monto.",
+      "Confirma la operación y guarda/retira comprobante si aparece."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Pagos en línea – Tarjeta de Crédito (Deuda Nacional)", channel:"ATI", category:"Pagos y avances",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Pagos y Avances”.",
+      "Selecciona “Pago en Línea – Tarjeta de Crédito Deuda Nacional”.",
+      "Elige tarjeta y monto, confirma.",
+      "Finaliza y guarda comprobante si aparece."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Pagos en línea – Tarjeta de Crédito (Deuda Internacional)", channel:"ATI", category:"Pagos y avances",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Pagos y Avances”.",
+      "Selecciona “Pago en Línea – Tarjeta de Crédito Deuda Internacional”.",
+      "Elige tarjeta y monto, confirma.",
+      "Finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Pagos en línea – Crédito de Consumo", channel:"ATI", category:"Pagos y avances",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Pagos y Avances”.",
+      "Selecciona “Pago en Línea – Crédito de Consumo”.",
+      "Elige crédito y confirma monto/cuota.",
+      "Finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Avance Tarjeta de Crédito (normal y cuotas) – Abono en Cuenta Corriente/Vista", channel:"ATI", category:"Pagos y avances",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Pagos y Avances”.",
+      "Selecciona “Avance Tarjeta de Crédito (normal y cuotas) Abono en Cuenta Corriente o Vista”.",
+      "Elige tarjeta, tipo de avance (normal/cuotas) y monto.",
+      "Confirma la cuenta de abono (Corriente/Vista).",
+      "Confirma y finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Compra de dólares con cargo a Cuenta Corriente y Retiro en Caja", channel:"ATI", category:"Pagos y avances",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Pagos y Avances”.",
+      "Selecciona “Compra de Dólares con cargo a Cuenta Corriente y Retiro en Caja”.",
+      "Confirma monto y cuenta de cargo.",
+      "Finaliza y sigue instrucciones de retiro (si aplica)."
+    ],
+    prereq:["RUT + Clave Internet.", "Disponibilidad de servicio (puede depender de sucursal)."]
+  },
+
+  { name:"Actualizar datos – Teléfono Particular", channel:"ATI", category:"Actualizar datos",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Actualizar Datos”.",
+      "Selecciona “Actualizar Teléfono Particular”.",
+      "Ingresa el nuevo número y confirma.",
+      "Finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Actualizar datos – Teléfono Comercial", channel:"ATI", category:"Actualizar datos",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Actualizar Datos”.",
+      "Selecciona “Actualizar Teléfono Comercial”.",
+      "Ingresa el nuevo número y confirma.",
+      "Finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Actualizar datos – Teléfono Celular", channel:"ATI", category:"Actualizar datos",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Actualizar Datos”.",
+      "Selecciona “Actualizar Teléfono Celular”.",
+      "Ingresa el nuevo número y confirma.",
+      "Finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Actualizar datos – Correo Electrónico", channel:"ATI", category:"Actualizar datos",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Actualizar Datos”.",
+      "Selecciona “Actualización de Correo Electrónico”.",
+      "Ingresa el correo y confirma.",
+      "Finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+
+  { name:"Seguridad – Reseteo Clave Internet", channel:"ATI", category:"Seguridad cuenta",
+    steps:[
+      "Selecciona idioma / Modo Adulto Mayor (opcional).",
+      "Entra a “Seguridad Cuenta”.",
+      "Selecciona “Reseteo Clave Internet”.",
+      "Sigue instrucciones del tótem (validación).",
+      "Finaliza y guarda indicaciones entregadas."
+    ],
+    prereq:["Documento de identificación disponible (si el tótem lo solicita)."]
+  },
+  { name:"Seguridad – Generación Nueva Clave Internet", channel:"ATI", category:"Seguridad cuenta",
+    steps:[
+      "Entra a “Seguridad Cuenta”.",
+      "Selecciona “Generación Nueva Clave Internet”.",
+      "Sigue validaciones que solicite el tótem.",
+      "Crea/recibe tu nueva clave según instrucciones.",
+      "Finaliza."
+    ],
+    prereq:["Documento de identificación disponible (si el tótem lo solicita)."]
+  },
+  { name:"Seguridad – Bloqueo y Reemisión Tarjeta de Crédito", channel:"ATI", category:"Seguridad cuenta",
+    steps:[
+      "Ingresa con RUT + Clave Internet (si lo solicita).",
+      "Menú → “Seguridad Cuenta”.",
+      "Selecciona “Bloqueo y Reemisión Tarjeta de Crédito”.",
+      "Elige la tarjeta y confirma el bloqueo.",
+      "Confirma reemisión y finaliza."
+    ],
+    prereq:["RUT + Clave Internet (según opción disponible)."]
+  },
+  { name:"Seguridad – Bloqueo y Reemisión Tarjeta de Débito (Call Back)", channel:"ATI", category:"Seguridad cuenta",
+    steps:[
+      "Menú → “Seguridad Cuenta”.",
+      "Selecciona “Solicitud Bloqueo y Reemisión Tarjeta de Débito (Call Back)”.",
+      "Completa datos solicitados (teléfono/confirmación).",
+      "Confirma la solicitud.",
+      "Espera el contacto/seguimiento según indique el sistema."
+    ],
+    prereq:["Teléfono de contacto disponible."]
+  },
+  { name:"Seguridad – Reseteo de Pinpass Tarjeta Débito", channel:"ATI", category:"Seguridad cuenta",
+    steps:[
+      "Menú → “Seguridad Cuenta”.",
+      "Selecciona “Reseteo de Pinpass Tarjeta de Débito”.",
+      "Sigue validaciones (según el tótem).",
+      "Confirma el reseteo y finaliza."
+    ],
+    prereq:["Documento de identificación disponible (si el tótem lo solicita)."]
+  },
+  { name:"Seguridad – Consulta Vale Vista Pendiente Cobro", channel:"ATI", category:"Seguridad cuenta",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Seguridad Cuenta”.",
+      "Selecciona “Consulta Vale Vista Pendiente Cobro”.",
+      "Revisa el estado y finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Seguridad – Consulta Estado Productos Pendiente Retiro", channel:"ATI", category:"Seguridad cuenta",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Seguridad Cuenta”.",
+      "Selecciona “Consulta Estado Productos Pendiente de Retiro”.",
+      "Revisa estado y finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Seguridad – Video Tutoriales de Aplicaciones Banco", channel:"ATI", category:"Seguridad cuenta",
+    steps:[
+      "Entra al menú “Seguridad Cuenta”.",
+      "Selecciona “Video Tutoriales de Aplicaciones Banco”.",
+      "Elige el tema y reproduce el tutorial.",
+      "Finaliza."
+    ],
+    prereq:[]
+  },
+  { name:"Seguridad – Firma Electrónica Avanzada para Documentos", channel:"ATI", category:"Seguridad cuenta",
+    steps:[
+      "Entra al menú “Seguridad Cuenta”.",
+      "Selecciona “Firma Electrónica Avanzada para Documentos”.",
+      "Sigue los pasos que te indique el tótem (según disponibilidad).",
+      "Finaliza."
+    ],
+    prereq:["Disponibilidad del servicio puede variar por sucursal."]
+  },
+
+  { name:"Cartolas – Tarjetas de Crédito / Cuenta Corriente / Vista", channel:"ATI", category:"Cartolas",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Cartolas”.",
+      "Selecciona el tipo (Tarjeta de Crédito / Cuenta Corriente / Vista).",
+      "Elige rango/periodo si aparece.",
+      "Imprime (si corresponde) y retira la cartola."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora (si imprime)."]
+  },
+  { name:"Cartola – Cuenta Corriente Moneda Nacional", channel:"ATI", category:"Cartolas",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Cartolas”.",
+      "Selecciona “Cartola de Cuenta Corriente Moneda Nacional”.",
+      "Confirma periodo si aparece y elige imprimir.",
+      "Retira cartola."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora."]
+  },
+  { name:"Cartola histórica – Cuenta Corriente Moneda Nacional (12 meses)", channel:"ATI", category:"Cartolas",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Cartolas”.",
+      "Selecciona “Cartola Histórica Cuenta Corriente Moneda Nacional (12 meses)”.",
+      "Selecciona el periodo requerido.",
+      "Imprime y retira el documento."
+    ],
+    prereq:["RUT + Clave Internet.", "Papel en impresora."]
+  },
+  { name:"Últimos movimientos – Cuenta Corriente Moneda Nacional", channel:"ATI", category:"Movimientos",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Movimientos”.",
+      "Selecciona “Últimos movimientos Cuenta Corriente Moneda Nacional”.",
+      "Revisa movimientos; imprime si aparece la opción.",
+      "Finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Últimos movimientos – Cuenta Corriente Moneda Extranjera", channel:"ATI", category:"Movimientos",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Movimientos”.",
+      "Selecciona “Últimos movimientos Cuenta Corriente Moneda Extranjera”.",
+      "Revisa movimientos y finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Últimos movimientos – Cuenta Vista", channel:"ATI", category:"Movimientos",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Movimientos”.",
+      "Selecciona “Últimos movimientos Cuenta Vista”.",
+      "Revisa y finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Últimos movimientos – Cuenta de Ahorro", channel:"ATI", category:"Movimientos",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Movimientos”.",
+      "Selecciona “Últimos movimientos Cuenta de Ahorro”.",
+      "Revisa y finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Movimientos no facturados – Tarjeta de Crédito (Nacional e Internacional)", channel:"ATI", category:"Movimientos",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Movimientos”.",
+      "Selecciona “Movimientos No Facturados Tarjeta de Crédito Nacional e Internacional”.",
+      "Elige tarjeta si aparece y revisa el detalle.",
+      "Finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+
+  { name:"Estados de cuenta – Tarjeta de Crédito (Deuda Nacional)", channel:"ATI", category:"Estados de cuenta",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Estados de Cuenta”.",
+      "Selecciona “Tarjeta de Crédito Deuda Nacional”.",
+      "Revisa/Imprime si corresponde.",
+      "Finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Estados de cuenta – Tarjeta de Crédito (Deuda Internacional)", channel:"ATI", category:"Estados de cuenta",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Estados de Cuenta”.",
+      "Selecciona “Tarjeta de Crédito Deuda Internacional”.",
+      "Revisa y finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+  { name:"Estados de cuenta – Históricos Tarjeta de Crédito (24 meses)", channel:"ATI", category:"Estados de cuenta",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Estados de Cuenta”.",
+      "Selecciona “Históricos Tarjeta de Crédito (24 meses)”.",
+      "Elige periodo y revisa/Imprime si aparece.",
+      "Finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+
+  { name:"Cuadros de pago – Créditos de Consumo", channel:"ATI", category:"Créditos",
+    steps:[
+      "Ingresa con RUT + Clave Internet.",
+      "Menú → “Créditos”.",
+      "Selecciona “Cuadros de Pago Créditos de Consumo”.",
+      "Elige crédito y periodo si aparece.",
+      "Revisa/Imprime y finaliza."
+    ],
+    prereq:["RUT + Clave Internet."]
+  },
+
+  // ===== Consulta Express (Caja Express) =====
+  { name:"Cobro de Vale Vista – En efectivo", channel:"EXPRESS", category:"Cobros",
+    steps:[
+      "En la Caja Express selecciona la opción “Cobro”.",
+      "Elige “Cobro Vale Vista en efectivo”.",
+      "Sigue las instrucciones del equipo (ingreso/validación del documento).",
+      "Confirma el cobro.",
+      "Retira el efectivo y el comprobante."
+    ],
+    prereq:["Tener el Vale Vista y cédula/identificación."]
+  },
+  { name:"Cobro de Vale Vista – Abono a Cuenta Vista/Corriente", channel:"EXPRESS", category:"Cobros",
+    steps:[
+      "En la Caja Express selecciona “Cobro”.",
+      "Elige “Cobro Vale Vista con abono a Cuenta Vista/Corriente”.",
+      "Ingresa/selecciona la cuenta de abono según indique la pantalla.",
+      "Confirma la operación.",
+      "Retira el comprobante."
+    ],
+    prereq:["Tener el Vale Vista y datos de la cuenta de abono."]
+  },
+
+  { name:"Depósito – Efectivo hasta $2.000.000 (solo billetes)", channel:"EXPRESS", category:"Depósitos",
+    steps:[
+      "En la Caja Express selecciona “Depósito”.",
+      "Elige “Depósito en efectivo (solo billetes)”.",
+      "Ingresa/selecciona la cuenta de destino.",
+      "Inserta los billetes cuando el equipo lo solicite.",
+      "Verifica el monto detectado y confirma.",
+      "Retira el comprobante."
+    ],
+    prereq:["Billetes en buen estado.", "Monto máximo indicado por el equipo."]
+  },
+  { name:"Depósito – Cheque hasta $50.000.000", channel:"EXPRESS", category:"Depósitos",
+    steps:[
+      "En la Caja Express selecciona “Depósito”.",
+      "Elige “Depósito con cheque”.",
+      "Ingresa/selecciona la cuenta de destino.",
+      "Inserta el cheque según indique el equipo.",
+      "Confirma datos y finaliza.",
+      "Retira el comprobante."
+    ],
+    prereq:["Cheque válido y completo.", "Monto máximo indicado por el equipo."]
+  },
+
+  { name:"Pago – Tarjeta de Crédito en efectivo", channel:"EXPRESS", category:"Pagos",
+    steps:[
+      "En la Caja Express selecciona “Pagos”.",
+      "Elige “Pago Tarjeta de Crédito en efectivo”.",
+      "Identifica la tarjeta/producto si el equipo lo pide.",
+      "Inserta el efectivo cuando lo solicite.",
+      "Confirma el pago y retira comprobante."
+    ],
+    prereq:["Efectivo (billetes) y datos del producto si aplica."]
+  },
+  { name:"Pago – Tarjeta de Crédito con cheque", channel:"EXPRESS", category:"Pagos",
+    steps:[
+      "En la Caja Express selecciona “Pagos”.",
+      "Elige “Pago de Tarjeta de Crédito con cheque”.",
+      "Identifica la tarjeta/producto si el equipo lo pide.",
+      "Inserta el cheque según instrucciones.",
+      "Confirma y retira comprobante."
+    ],
+    prereq:["Cheque válido y datos del producto si aplica."]
+  },
+  { name:"Pago – Crédito de Consumo con cheque", channel:"EXPRESS", category:"Pagos",
+    steps:[
+      "En la Caja Express selecciona “Pagos”.",
+      "Elige “Pago Crédito de Consumo con cheque”.",
+      "Identifica el crédito/producto.",
+      "Inserta el cheque y confirma.",
+      "Retira el comprobante."
+    ],
+    prereq:["Cheque válido y datos del crédito si aplica."]
+  },
+  { name:"Pago – Tarjeta de Crédito / Crédito de Consumo (efectivo o cheque)", channel:"EXPRESS", category:"Pagos",
+    steps:[
+      "En la Caja Express selecciona “Pagos”.",
+      "Elige la opción de pago (Tarjeta de Crédito / Crédito de Consumo).",
+      "Selecciona medio de pago (efectivo o cheque) según corresponda.",
+      "Sigue instrucciones del equipo (insertar efectivo/cheque).",
+      "Confirma y retira comprobante."
+    ],
+    prereq:["Efectivo o cheque, según opción elegida."]
+  },
+
+  { name:"Giro/Avance – Tarjeta de Crédito hasta $400.000 (con tarjeta)", channel:"EXPRESS", category:"Giros y avances",
+    steps:[
+      "En la Caja Express selecciona “Giros”.",
+      "Elige “Giro/Avance con Tarjeta de Crédito (con tarjeta)”.",
+      "Ingresa monto (hasta el máximo permitido).",
+      "Sigue validaciones (PIN/confirmación).",
+      "Retira el efectivo y el comprobante."
+    ],
+    prereq:["Tarjeta disponible.", "Conocer PIN si el equipo lo solicita."]
+  },
+  { name:"Giro/Avance – Tarjeta de Crédito hasta $800.000 (C.I. + biometría)", channel:"EXPRESS", category:"Giros y avances",
+    steps:[
+      "En la Caja Express selecciona “Giros”.",
+      "Elige “Giro/Avance (C.I. + biometría)”.",
+      "Presenta tu Cédula de Identidad cuando el equipo lo pida.",
+      "Completa verificación biométrica si está disponible.",
+      "Ingresa monto (hasta el máximo permitido), confirma.",
+      "Retira efectivo y comprobante."
+    ],
+    prereq:["Cédula de Identidad vigente.", "Biometría disponible en el equipo."]
+  },
+
+  { name:"Depósitos (general) – Billetes o cheques", channel:"EXPRESS", category:"Depósitos",
+    steps:[
+      "En Caja Express entra a “Depósito”.",
+      "Elige si es “Efectivo” o “Cheque”.",
+      "Ingresa la cuenta de destino.",
+      "Inserta billetes/cheque cuando lo indique.",
+      "Confirma monto y finaliza.",
+      "Retira el comprobante."
+    ],
+    prereq:[]
+  }
+];
+
+function normalize(s){ return (s||"").toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,""); }
+
+const elQ = document.getElementById("q");
+const elTramite = document.getElementById("tramite");
+const btn = document.getElementById("btnMostrar");
+
+const elRes = document.getElementById("resultado");
+const rNombre = document.getElementById("rNombre");
+const rCategoria = document.getElementById("rCategoria");
+const rPill = document.getElementById("rPill");
+const rDonde = document.getElementById("rDonde");
+const rRequisitos = document.getElementById("rRequisitos");
+const rPasos = document.getElementById("rPasos");
+const rPie = document.getElementById("rPie");
+
+function buildOptions(filterText=""){
+  const f = normalize(filterText);
+  const items = TRAMITES
+    .filter(t => !f || normalize(t.name + " " + t.category + " " + CHANNELS[t.channel].label).includes(f))
+    .sort((a,b)=> (a.channel===b.channel ? a.name.localeCompare(b.name) : a.channel.localeCompare(b.channel)));
+
+  elTramite.innerHTML = "";
+  // placeholder
+  const opt0 = document.createElement("option");
+  opt0.value = "";
+  opt0.textContent = "— Selecciona un trámite —";
+  elTramite.appendChild(opt0);
+
+  // group by channel then category
+  const byChannel = {};
+  for(const it of items){
+    (byChannel[it.channel] ||= []).push(it);
+  }
+  for(const ch of Object.keys(byChannel)){
+    const grp = document.createElement("optgroup");
+    grp.label = CHANNELS[ch].label;
+    // subgroup by category
+    const byCat = {};
+    byChannel[ch].forEach(it => (byCat[it.category] ||= []).push(it));
+    const cats = Object.keys(byCat).sort((a,b)=>a.localeCompare(b));
+    for(const cat of cats){
+      // add category separator as disabled option
+      const sep = document.createElement("option");
+      sep.disabled = true;
+      sep.textContent = "— " + cat.toUpperCase() + " —";
+      grp.appendChild(sep);
+      byCat[cat].sort((a,b)=>a.name.localeCompare(b.name)).forEach(it=>{
+        const o = document.createElement("option");
+        o.value = it.name;
+        o.textContent = it.name;
+        grp.appendChild(o);
+      });
     }
+    elTramite.appendChild(grp);
+  }
+}
 
-    function render() {
-      const t = TRAMITES.find(x => x.id === sel.value);
-      const montoRaw = montoInput.value.trim();
-      const monto = montoRaw === "" ? null : Number(montoRaw);
+function showGuide(){
+  const name = elTramite.value;
+  const item = TRAMITES.find(t => t.name === name);
+  if(!item){
+    elRes.style.display = "none";
+    return;
+  }
+  const ch = CHANNELS[item.channel];
 
-      desc.textContent = t?.descripcion ?? "";
+  rNombre.textContent = item.name;
+  rCategoria.textContent = "Categoría: " + item.category;
 
-      const rec = t.regla({ monto });
-      const pasos = t.pasos ?? [];
-      const pasosHtml = pasos.length
-        ? `<ol>${pasos.map(p => `<li>${p}</li>`).join("")}</ol>`
-        : `<div class="muted">No hay pasos configurados.</div>`;
+  rPill.innerHTML = "";
+  const pill = document.createElement("div");
+  pill.className = "pill " + ch.pillClass;
+  pill.innerHTML = `<span class="dot"></span><span>${ch.label}</span>`;
+  rPill.appendChild(pill);
 
-      const canalTexto = {
-        "ATI": "ATI (Autoatención)",
-        "CONSULTA_EXPRESS": "Consulta Express",
-        "CAJA_EXPRESS": "Caja Express",
-        "CAJA": "Caja (atención con persona)",
-        "MESON": "Mesón/Ejecutivo",
-        "PC_BANCA": "Computador Banca en Línea",
-        "DUDOSO": "Falta información"
-      }[rec.canal] || rec.canal;
+  rDonde.textContent = ch.label;
 
-      resultado.innerHTML = `
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-          ${badge(rec.tipo, rec.etiqueta)}
-          <div><b>Canal recomendado:</b> ${canalTexto}</div>
-        </div>
-        <div class="muted" style="margin-top:10px;"><b>Paso a paso:</b></div>
-        ${pasosHtml}
-        <div class="muted" style="margin-top:10px;">
-          <b>Tip:</b> Si te pide datos adicionales y no los tienes, o aparece un error, pide apoyo al anfitrión/ATI Coach.
-        </div>
-      `;
-    }
+  // prereqs
+  const prereq = (item.prereq || []).filter(Boolean);
+  if(prereq.length){
+    rRequisitos.style.display = "block";
+    rRequisitos.innerHTML = "<b>Requisitos previos:</b><ul style='margin:6px 0 0 18px'>" +
+      prereq.map(x=>`<li>${x}</li>`).join("") + "</ul>";
+  } else {
+    rRequisitos.style.display = "none";
+  }
 
-    function init() {
-      sel.innerHTML = TRAMITES.map(t => `<option value="${t.id}">${t.nombre}</option>`).join("");
-      sel.value = TRAMITES[0]?.id ?? "";
-      render();
-    }
+  // steps
+  rPasos.innerHTML = "";
+  item.steps.forEach(s=>{
+    const li = document.createElement("li");
+    li.textContent = s;
+    rPasos.appendChild(li);
+  });
 
-    sel.addEventListener("change", render);
-    montoInput.addEventListener("input", render);
+  // footer note
+  if(item.channel === "ATI"){
+    rPie.textContent = "Nota: Si el cliente no tiene Clave Internet, varios trámites del ATI no se podrán realizar (deberá pedir apoyo en sucursal o usar otro canal).";
+  } else {
+    rPie.textContent = "Nota: En Caja Express respeta los topes (montos máximos) y verifica el comprobante antes de retirarte.";
+  }
 
-    btnShare.addEventListener("click", async () => {
-      const t = TRAMITES.find(x => x.id === sel.value);
-      const montoRaw = montoInput.value.trim();
-      const monto = montoRaw === "" ? null : Number(montoRaw);
-      const rec = t.regla({ monto });
+  elRes.style.display = "block";
+  elRes.scrollIntoView({behavior:"smooth", block:"start"});
+}
 
-      const canalTexto = {
-        "ATI": "ATI",
-        "CONSULTA_EXPRESS": "Consulta Express",
-        "CAJA_EXPRESS": "Caja Express",
-        "CAJA": "Caja",
-        "MESON": "Mesón/Ejecutivo",
-        "PC_BANCA": "Computador Banca en Línea",
-        "DUDOSO": "Falta información"
-      }[rec.canal] || rec.canal;
+elQ.addEventListener("input", () => buildOptions(elQ.value));
+btn.addEventListener("click", showGuide);
+elTramite.addEventListener("change", () => showGuide());
 
-      const text = `Trámite: ${t.nombre}\nCanal recomendado: ${canalTexto}\n\nPasos:\n- ${t.pasos.join("\n- ")}`;
-
-      if (navigator.share) {
-        try { await navigator.share({ title: "Guía de Trámite", text }); }
-        catch (_) {}
-      } else {
-        await navigator.clipboard.writeText(text);
-        alert("Instrucciones copiadas al portapapeles.");
-      }
-    });
-
-    init();
-  </script>
+// init
+buildOptions("");
+</script>
 </body>
 </html>
