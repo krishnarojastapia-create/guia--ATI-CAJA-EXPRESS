@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Guía de Trámites – ATI / Caja Express</title>
+<style>
+  :root {
+    --blue:#0b4ea2;
+    --blue2:#0e63d6;
+    --bg:#ffffff;
+    --card:#ffffff;
+    --border:#d6e6ff;
+    --text:#0b1633;
+    --muted:#5b6b8a;
+    --shadow: 0 10px 25px rgba(11,78,162,.12);
+    --radius: 16px;
+    --pad: 16px;
+    --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+  body {
+    margin:0;
+    font-family:var(--font);
+    background: linear-gradient(180deg, #ffffff 0%, #f3f8ff 65%, #ffffff 100%);
+    color:var(--text);
+  }
+  header {
+    position:sticky; top:0;
+    background: #ffffffcc;
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--border);
+    z-index:50;
+  }
+  .wrap { max-width: 920px; margin:0 auto; padding: 14px var(--pad); }
+  .brand {
+    display:flex; align-items:center; gap:12px;
+  }
+  .logo {
+    width:40px; height:40px; border-radius:12px;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--blue2) 100%);
+    box-shadow: var(--shadow);
+  }
+  h1 { font-size: 18px; margin:0; }
+  .sub { margin:2px 0 0; color:var(--muted); font-size: 13px; }
+
+  .grid {
+    display:grid; gap:12px;
+    grid-template-columns: 1fr;
+    padding: 14px var(--pad) 24px;
+    max-width: 920px; margin:0 auto;
+  }
+  .card {
+    background: var(--card);
+    border:1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 14px;
+  }
+  .controls {
+    display:grid; gap:10px;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 720px) {
+    .controls { grid-template-columns: 1fr 1fr 1fr; align-items:end; }
+  }
+  label { font-weight:700; font-size: 13px; display:block; margin-bottom:6px; color: var(--blue); }
+  select, .toggle {
+    width:100%;
+    padding: 12px 12px;
+    border-radius: 12px;
+    border:1px solid var(--border);
+    font-size: 16px;
+    background:#fff;
+    color:var(--text);
+  }
+  .toggle {
+    display:flex; align-items:center; gap:10px; user-select:none;
+  }
+  .toggle input { width: 18px; height: 18px; }
+  .pill {
+    display:inline-flex; align-items:center; gap:8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: #eaf2ff;
+    border: 1px solid var(--border);
+    color: var(--blue);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .section-title {
+    display:flex; justify-content:space-between; align-items:center;
+    gap:10px; flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .box {
+    border:1px dashed #b7d0ff;
+    border-radius: 14px;
+    padding: 12px;
+    background: #f7fbff;
+  }
+  ul { margin: 8px 0 0 18px; }
+  li { margin: 6px 0; line-height: 1.35; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .note {
+    border-left: 6px solid var(--blue2);
+    background: #f1f7ff;
+    padding: 12px 12px;
+    border-radius: 12px;
+  }
+  .where {
+    display:flex; align-items:center; justify-content:space-between;
+    gap:10px; flex-wrap:wrap;
+  }
+  .where strong { font-size: 16px; }
+  .badge {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 12px;
+    border: 1px solid var(--border);
+  }
+  .badge.ati { background:#e9f6ff; color:#0b4ea2; }
+  .badge.ce { background:#f1f0ff; color:#3a2bd6; }
+
+  /* Senior mode */
+  body.senior {
+    font-size: 20px;
+  }
+  body.senior h1 { font-size: 22px; }
+  body.senior .sub { font-size: 16px; }
+  body.senior label { font-size: 16px; }
+  body.senior select, body.senior .toggle { font-size: 20px; padding: 14px; }
+  body.senior .badge { font-size: 14px; padding: 8px 12px; }
+  body.senior li { line-height: 1.5; }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1 id="t_title">Guía de Trámites – Sucursal</h1>
+        <div class="sub" id="t_subtitle">Seleccione su idioma, active modo adulto mayor si lo necesita y elija el trámite.</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="grid">
+  <section class="card">
+    <div class="controls">
+      <div>
+        <label id="t_language">Idioma</label>
+        <select id="lang">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+          <option value="ht">Kreyòl (Haitian)</option>
+        </select>
+      </div>
+      <div>
+        <label id="t_selectProcedure">Trámite</label>
+        <select id="proc">
+          <option value="" selected disabled>Selecciona un trámite…</option>
+        </select>
+      </div>
+      <div>
+        <label id="t_senior">Modo adulto mayor</label>
+        <div class="toggle">
+          <input type="checkbox" id="senior"/>
+          <span id="t_seniorLabel">Activar</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="result" style="display:none;">
+    <div class="section-title">
+      <div class="pill" id="t_wherePill">Dónde hacerlo</div>
+    </div>
+    <div class="box">
+      <div class="where">
+        <strong id="whereText"></strong>
+        <span class="badge" id="whereBadge"></span>
+      </div>
+      <div class="muted" style="margin-top:10px" id="reqText"></div>
+    </div>
+
+    <div style="height:12px"></div>
+
+    <div class="section-title">
+      <div class="pill" id="t_stepsPill">Paso a paso</div>
+    </div>
+    <div class="box">
+      <ul id="stepsList"></ul>
+    </div>
+
+    <div style="height:12px"></div>
+
+    <div class="note" id="note"></div>
+  </section>
+</main>
+
+<script>
+const DATA = [{"name": "Cobro Vale Vista en efectivo", "channel": "CAJA_EXPRESS", "steps": {"es": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Sigue las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Ingresa los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirma la operación y espera el comprobante.", "Guarda tu comprobante y verifica el resultado."], "en": ["Go to la Caja Express y selecciona el tipo de operación en pantalla.", "Follow las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Enter los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirm la operación y espera el comprobante.", "Keep tu comprobante y verifica el resultado."], "ht": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Swiv las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Antre los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Konfime la operación y espera el comprobante.", "Kenbe tu comprobante y verifica el resultado."]}}, {"name": "Cobro Vale Vista con abono a Cuenta Vista/Corriente", "channel": "CAJA_EXPRESS", "steps": {"es": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Sigue las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Ingresa los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirma la operación y espera el comprobante.", "Guarda tu comprobante y verifica el resultado."], "en": ["Go to la Caja Express y selecciona el tipo de operación en pantalla.", "Follow las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Enter los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirm la operación y espera el comprobante.", "Keep tu comprobante y verifica el resultado."], "ht": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Swiv las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Antre los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Konfime la operación y espera el comprobante.", "Kenbe tu comprobante y verifica el resultado."]}}, {"name": "Depósito en efectivo hasta $2.000.000 (solo billetes)", "channel": "CAJA_EXPRESS", "steps": {"es": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Sigue las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Ingresa los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirma la operación y espera el comprobante.", "Guarda tu comprobante y verifica el resultado."], "en": ["Go to la Caja Express y selecciona el tipo de operación en pantalla.", "Follow las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Enter los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirm la operación y espera el comprobante.", "Keep tu comprobante y verifica el resultado."], "ht": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Swiv las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Antre los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Konfime la operación y espera el comprobante.", "Kenbe tu comprobante y verifica el resultado."]}}, {"name": "Depósito con cheque hasta $50.000.000", "channel": "CAJA_EXPRESS", "steps": {"es": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Sigue las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Ingresa los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirma la operación y espera el comprobante.", "Guarda tu comprobante y verifica el resultado."], "en": ["Go to la Caja Express y selecciona el tipo de operación en pantalla.", "Follow las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Enter los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirm la operación y espera el comprobante.", "Keep tu comprobante y verifica el resultado."], "ht": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Swiv las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Antre los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Konfime la operación y espera el comprobante.", "Kenbe tu comprobante y verifica el resultado."]}}, {"name": "Pago de Tarjeta de Crédito con cheque", "channel": "CAJA_EXPRESS", "steps": {"es": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Sigue las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Ingresa los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirma la operación y espera el comprobante.", "Guarda tu comprobante y verifica el resultado."], "en": ["Go to la Caja Express y selecciona el tipo de operación en pantalla.", "Follow las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Enter los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirm la operación y espera el comprobante.", "Keep tu comprobante y verifica el resultado."], "ht": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Swiv las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Antre los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Konfime la operación y espera el comprobante.", "Kenbe tu comprobante y verifica el resultado."]}}, {"name": "Pago Tarjeta de Crédito en efectivo", "channel": "CAJA_EXPRESS", "steps": {"es": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Sigue las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Ingresa los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirma la operación y espera el comprobante.", "Guarda tu comprobante y verifica el resultado."], "en": ["Go to la Caja Express y selecciona el tipo de operación en pantalla.", "Follow las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Enter los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirm la operación y espera el comprobante.", "Keep tu comprobante y verifica el resultado."], "ht": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Swiv las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Antre los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Konfime la operación y espera el comprobante.", "Kenbe tu comprobante y verifica el resultado."]}}, {"name": "Pago Crédito de Consumo con cheque", "channel": "CAJA_EXPRESS", "steps": {"es": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Sigue las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Ingresa los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirma la operación y espera el comprobante.", "Guarda tu comprobante y verifica el resultado."], "en": ["Go to la Caja Express y selecciona el tipo de operación en pantalla.", "Follow las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Enter los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirm la operación y espera el comprobante.", "Keep tu comprobante y verifica el resultado."], "ht": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Swiv las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Antre los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Konfime la operación y espera el comprobante.", "Kenbe tu comprobante y verifica el resultado."]}}, {"name": "Giros y Avances de Tarjeta de Crédito hasta $400.000 (clientes) y cobro de pensión con Tarjeta", "channel": "CAJA_EXPRESS", "steps": {"es": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Sigue las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Ingresa los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirma la operación y espera el comprobante.", "Guarda tu comprobante y verifica el resultado."], "en": ["Go to la Caja Express y selecciona el tipo de operación en pantalla.", "Follow las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Enter los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirm la operación y espera el comprobante.", "Keep tu comprobante y verifica el resultado."], "ht": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Swiv las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Antre los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Konfime la operación y espera el comprobante.", "Kenbe tu comprobante y verifica el resultado."]}}, {"name": "Giros y Avances de Tarjeta de Crédito hasta $800.000 (clientes) y cobro de pensión con C.I. + biometría", "channel": "CAJA_EXPRESS", "steps": {"es": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Sigue las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Ingresa los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirma la operación y espera el comprobante.", "Guarda tu comprobante y verifica el resultado."], "en": ["Go to la Caja Express y selecciona el tipo de operación en pantalla.", "Follow las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Enter los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Confirm la operación y espera el comprobante.", "Keep tu comprobante y verifica el resultado."], "ht": ["Ubica la Caja Express y selecciona el tipo de operación en pantalla.", "Swiv las instrucciones para identificarte (según corresponda: tarjeta/cédula/biometría).", "Antre los datos solicitados del trámite (monto, cuenta, vale vista, etc.).", "Introduce/retira efectivo o cheque cuando el equipo lo indique.", "Konfime la operación y espera el comprobante.", "Kenbe tu comprobante y verifica el resultado."]}}, {"name": "Solicitud o desbloqueo de Claves de Internet", "channel": "ATI", "steps": {"es": ["Selecciona “Seguridad / Clave Internet”.", "Ingresa tu RUT y tu Clave de Internet (requisito obligatorio para operar).", "Elige “Solicitar”, “Reseteo” o “Desbloqueo”, según corresponda.", "Sigue las instrucciones en pantalla (validación, preguntas y/o biometría si aplica).", "Confirma y guarda el comprobante o mensaje de confirmación."], "en": ["Select “Seguridad / Internet password Internet”.", "Enter tu RUT y tu Internet password de Internet (requisito obligatorio para operar).", "Choose “Solicitar”, “Reseteo” o “Desbloqueo”, según corresponda.", "Follow las instrucciones en pantalla (validación, preguntas y/o biometría si aplica).", "Confirm y guarda el comprobante o mensaje de confirmación."], "ht": ["Chwazi “Seguridad / Clave Internet”.", "Antre tu RUT y tu Clave de Internet (requisito obligatorio para operar).", "Chwazi “Solicitar”, “Reseteo” o “Desbloqueo”, según corresponda.", "Swiv las instrucciones en pantalla (validación, preguntas y/o biometría si aplica).", "Konfime y guarda el comprobante o mensaje de confirmación."]}}, {"name": "Imprimir cupón de pago de Cuotas de Crédito", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet (requisito obligatorio).", "Selecciona el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirma la operación.", "Imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet (requisito obligatorio).", "Select el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirm la operación.", "Print/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet (requisito obligatorio).", "Chwazi el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Konfime la operación.", "Enprime/guarda el comprobante."]}}, {"name": "Obtener cartolas de Tarjetas de Crédito, Cuenta Corriente y/o Vista", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet (requisito obligatorio).", "Selecciona el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirma la operación.", "Imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet (requisito obligatorio).", "Select el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirm la operación.", "Print/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet (requisito obligatorio).", "Chwazi el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Konfime la operación.", "Enprime/guarda el comprobante."]}}, {"name": "Solicitar Avance de Tarjeta de Crédito", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Pagos y Avances” o “Avances”.", "Elige el tipo de avance (normal/cuotas) y el producto asociado.", "Confirma monto y condiciones mostradas en pantalla.", "Finaliza e imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Pagos y Avances” o “Avances”.", "Choose el tipo de avance (normal/cuotas) y el producto asociado.", "Confirm monto y condiciones mostradas en pantalla.", "Finaliza e imprime/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Pagos y Avances” o “Avances”.", "Chwazi el tipo de avance (normal/cuotas) y el producto asociado.", "Konfime monto y condiciones mostradas en pantalla.", "Finaliza e imprime/guarda el comprobante."]}}, {"name": "Cartola de Cuenta Corriente Moneda Nacional", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Cartolas / Movimientos / Estados de Cuenta”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Revisa el documento en pantalla.", "Imprime la cartola/estado de cuenta si la necesitas."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Cartolas / Movimientos / Estados de Account”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card) y el período.", "Review el documento en pantalla.", "Print la cartola/estado de cuenta si la necesitas."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Cartolas / Movimientos / Estados de Cuenta”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Verifye el documento en pantalla.", "Enprime la cartola/estado de cuenta si la necesitas."]}}, {"name": "Cartola histórica Cuenta Corriente Moneda Nacional (12 meses)", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Cartolas / Movimientos / Estados de Cuenta”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Revisa el documento en pantalla.", "Imprime la cartola/estado de cuenta si la necesitas."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Cartolas / Movimientos / Estados de Account”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card) y el período.", "Review el documento en pantalla.", "Print la cartola/estado de cuenta si la necesitas."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Cartolas / Movimientos / Estados de Cuenta”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Verifye el documento en pantalla.", "Enprime la cartola/estado de cuenta si la necesitas."]}}, {"name": "Estado de Cuenta Tarjeta de Crédito – Deuda Nacional", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Cartolas / Movimientos / Estados de Cuenta”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Revisa el documento en pantalla.", "Imprime la cartola/estado de cuenta si la necesitas."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Cartolas / Movimientos / Estados de Account”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card) y el período.", "Review el documento en pantalla.", "Print la cartola/estado de cuenta si la necesitas."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Cartolas / Movimientos / Estados de Cuenta”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Verifye el documento en pantalla.", "Enprime la cartola/estado de cuenta si la necesitas."]}}, {"name": "Estado de Cuenta Tarjeta de Crédito – Deuda Internacional", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Cartolas / Movimientos / Estados de Cuenta”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Revisa el documento en pantalla.", "Imprime la cartola/estado de cuenta si la necesitas."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Cartolas / Movimientos / Estados de Account”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card) y el período.", "Review el documento en pantalla.", "Print la cartola/estado de cuenta si la necesitas."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Cartolas / Movimientos / Estados de Cuenta”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Verifye el documento en pantalla.", "Enprime la cartola/estado de cuenta si la necesitas."]}}, {"name": "Estado de Cuenta Históricos Tarjeta de Crédito (24 meses)", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Cartolas / Movimientos / Estados de Cuenta”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Revisa el documento en pantalla.", "Imprime la cartola/estado de cuenta si la necesitas."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Cartolas / Movimientos / Estados de Account”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card) y el período.", "Review el documento en pantalla.", "Print la cartola/estado de cuenta si la necesitas."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Cartolas / Movimientos / Estados de Cuenta”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Verifye el documento en pantalla.", "Enprime la cartola/estado de cuenta si la necesitas."]}}, {"name": "Movimientos No Facturados Tarjeta de Crédito (Nacional e Internacional)", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Cartolas / Movimientos / Estados de Cuenta”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Revisa el documento en pantalla.", "Imprime la cartola/estado de cuenta si la necesitas."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Cartolas / Movimientos / Estados de Account”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card) y el período.", "Review el documento en pantalla.", "Print la cartola/estado de cuenta si la necesitas."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Cartolas / Movimientos / Estados de Cuenta”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Verifye el documento en pantalla.", "Enprime la cartola/estado de cuenta si la necesitas."]}}, {"name": "Cuadros de Pago Créditos de Consumo", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Cartolas / Movimientos / Estados de Cuenta”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Revisa el documento en pantalla.", "Imprime la cartola/estado de cuenta si la necesitas."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Cartolas / Movimientos / Estados de Account”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card) y el período.", "Review el documento en pantalla.", "Print la cartola/estado de cuenta si la necesitas."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Cartolas / Movimientos / Estados de Cuenta”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta) y el período.", "Verifye el documento en pantalla.", "Enprime la cartola/estado de cuenta si la necesitas."]}}, {"name": "Últimos movimientos Cuenta Corriente Moneda Nacional", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet (requisito obligatorio).", "Selecciona el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirma la operación.", "Imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet (requisito obligatorio).", "Select el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirm la operación.", "Print/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet (requisito obligatorio).", "Chwazi el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Konfime la operación.", "Enprime/guarda el comprobante."]}}, {"name": "Últimos movimientos Cuenta Corriente Moneda Extranjera", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet (requisito obligatorio).", "Selecciona el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirma la operación.", "Imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet (requisito obligatorio).", "Select el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirm la operación.", "Print/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet (requisito obligatorio).", "Chwazi el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Konfime la operación.", "Enprime/guarda el comprobante."]}}, {"name": "Últimos movimientos Cuenta Vista", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet (requisito obligatorio).", "Selecciona el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirma la operación.", "Imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet (requisito obligatorio).", "Select el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirm la operación.", "Print/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet (requisito obligatorio).", "Chwazi el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Konfime la operación.", "Enprime/guarda el comprobante."]}}, {"name": "Últimos movimientos Cuenta de Ahorro", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet (requisito obligatorio).", "Selecciona el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirma la operación.", "Imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet (requisito obligatorio).", "Select el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirm la operación.", "Print/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet (requisito obligatorio).", "Chwazi el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Konfime la operación.", "Enprime/guarda el comprobante."]}}, {"name": "Saldo Cuenta Corriente Moneda Nacional", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Saldo”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta).", "Revisa el saldo en pantalla y, si necesitas, imprime el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Saldo”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card).", "Review el saldo en pantalla y, si necesitas, imprime el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Saldo”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta).", "Verifye el saldo en pantalla y, si necesitas, imprime el comprobante."]}}, {"name": "Saldo Cuenta Corriente Moneda Extranjera", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Saldo”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta).", "Revisa el saldo en pantalla y, si necesitas, imprime el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Saldo”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card).", "Review el saldo en pantalla y, si necesitas, imprime el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Saldo”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta).", "Verifye el saldo en pantalla y, si necesitas, imprime el comprobante."]}}, {"name": "Saldo Cuenta Vista", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Saldo”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta).", "Revisa el saldo en pantalla y, si necesitas, imprime el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Saldo”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card).", "Review el saldo en pantalla y, si necesitas, imprime el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Saldo”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta).", "Verifye el saldo en pantalla y, si necesitas, imprime el comprobante."]}}, {"name": "Saldo Cuenta Ahorro", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Saldo”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta).", "Revisa el saldo en pantalla y, si necesitas, imprime el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Saldo”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card).", "Review el saldo en pantalla y, si necesitas, imprime el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Saldo”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta).", "Verifye el saldo en pantalla y, si necesitas, imprime el comprobante."]}}, {"name": "Saldo Tarjeta de Crédito", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Saldo”.", "Elige el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta).", "Revisa el saldo en pantalla y, si necesitas, imprime el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Saldo”.", "Choose el producto (Account Corriente/Vista/Ahorro/Card).", "Review el saldo en pantalla y, si necesitas, imprime el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Saldo”.", "Chwazi el producto (Cuenta Corriente/Vista/Ahorro/Tarjeta).", "Verifye el saldo en pantalla y, si necesitas, imprime el comprobante."]}}, {"name": "Cupón de Pago Tarjeta de Crédito", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Cupones”.", "Elige el cupón/comprobante que necesitas.", "Selecciona período/detalle si aparece la opción.", "Imprime el cupón y guárdalo."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Cupones”.", "Choose el cupón/comprobante que necesitas.", "Select período/detalle si aparece la opción.", "Print el cupón y guárdalo."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Cupones”.", "Chwazi el cupón/comprobante que necesitas.", "Chwazi período/detalle si aparece la opción.", "Enprime el cupón y guárdalo."]}}, {"name": "Cupón de Pago Crédito de Consumo", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Cupones”.", "Elige el cupón/comprobante que necesitas.", "Selecciona período/detalle si aparece la opción.", "Imprime el cupón y guárdalo."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Cupones”.", "Choose el cupón/comprobante que necesitas.", "Select período/detalle si aparece la opción.", "Print el cupón y guárdalo."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Cupones”.", "Chwazi el cupón/comprobante que necesitas.", "Chwazi período/detalle si aparece la opción.", "Enprime el cupón y guárdalo."]}}, {"name": "Cupón de Pago Crédito Hipotecario", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Cupones”.", "Elige el cupón/comprobante que necesitas.", "Selecciona período/detalle si aparece la opción.", "Imprime el cupón y guárdalo."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Cupones”.", "Choose el cupón/comprobante que necesitas.", "Select período/detalle si aparece la opción.", "Print el cupón y guárdalo."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Cupones”.", "Chwazi el cupón/comprobante que necesitas.", "Chwazi período/detalle si aparece la opción.", "Enprime el cupón y guárdalo."]}}, {"name": "Cupón de Giro Cuenta Vista", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Cupones”.", "Elige el cupón/comprobante que necesitas.", "Selecciona período/detalle si aparece la opción.", "Imprime el cupón y guárdalo."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Cupones”.", "Choose el cupón/comprobante que necesitas.", "Select período/detalle si aparece la opción.", "Print el cupón y guárdalo."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Cupones”.", "Chwazi el cupón/comprobante que necesitas.", "Chwazi período/detalle si aparece la opción.", "Enprime el cupón y guárdalo."]}}, {"name": "Cupón de Giro Cuenta de Ahorro", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Cupones”.", "Elige el cupón/comprobante que necesitas.", "Selecciona período/detalle si aparece la opción.", "Imprime el cupón y guárdalo."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Cupones”.", "Choose el cupón/comprobante que necesitas.", "Select período/detalle si aparece la opción.", "Print el cupón y guárdalo."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Cupones”.", "Chwazi el cupón/comprobante que necesitas.", "Chwazi período/detalle si aparece la opción.", "Enprime el cupón y guárdalo."]}}, {"name": "Cupón de Depósito Cuenta Vista", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Cupones”.", "Elige el cupón/comprobante que necesitas.", "Selecciona período/detalle si aparece la opción.", "Imprime el cupón y guárdalo."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Cupones”.", "Choose el cupón/comprobante que necesitas.", "Select período/detalle si aparece la opción.", "Print el cupón y guárdalo."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Cupones”.", "Chwazi el cupón/comprobante que necesitas.", "Chwazi período/detalle si aparece la opción.", "Enprime el cupón y guárdalo."]}}, {"name": "Cupón de Depósito Cuenta de Ahorro", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Cupones”.", "Elige el cupón/comprobante que necesitas.", "Selecciona período/detalle si aparece la opción.", "Imprime el cupón y guárdalo."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Cupones”.", "Choose el cupón/comprobante que necesitas.", "Select período/detalle si aparece la opción.", "Print el cupón y guárdalo."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Cupones”.", "Chwazi el cupón/comprobante que necesitas.", "Chwazi período/detalle si aparece la opción.", "Enprime el cupón y guárdalo."]}}, {"name": "Cupón de Avance Tarjeta de Crédito", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Cupones”.", "Elige el cupón/comprobante que necesitas.", "Selecciona período/detalle si aparece la opción.", "Imprime el cupón y guárdalo."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Cupones”.", "Choose el cupón/comprobante que necesitas.", "Select período/detalle si aparece la opción.", "Print el cupón y guárdalo."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Cupones”.", "Chwazi el cupón/comprobante que necesitas.", "Chwazi período/detalle si aparece la opción.", "Enprime el cupón y guárdalo."]}}, {"name": "Cupón de Pago Leasing", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Cupones”.", "Elige el cupón/comprobante que necesitas.", "Selecciona período/detalle si aparece la opción.", "Imprime el cupón y guárdalo."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Cupones”.", "Choose el cupón/comprobante que necesitas.", "Select período/detalle si aparece la opción.", "Print el cupón y guárdalo."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Cupones”.", "Chwazi el cupón/comprobante que necesitas.", "Chwazi período/detalle si aparece la opción.", "Enprime el cupón y guárdalo."]}}, {"name": "Comprobante Compra Moneda Extranjera", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Cupones”.", "Elige el cupón/comprobante que necesitas.", "Selecciona período/detalle si aparece la opción.", "Imprime el cupón y guárdalo."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Cupones”.", "Choose el cupón/comprobante que necesitas.", "Select período/detalle si aparece la opción.", "Print el cupón y guárdalo."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Cupones”.", "Chwazi el cupón/comprobante que necesitas.", "Chwazi período/detalle si aparece la opción.", "Enprime el cupón y guárdalo."]}}, {"name": "Pago en Línea – Línea de Crédito", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Pagos y Avances”.", "Elige el tipo de pago en línea (Línea de Crédito / Tarjeta / Crédito de Consumo).", "Confirma los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Pagos y Avances”.", "Choose el tipo de pago en línea (Línea de Crédito / Card / Crédito de Consumo).", "Confirm los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Pagos y Avances”.", "Chwazi el tipo de pago en línea (Línea de Crédito / Tarjeta / Crédito de Consumo).", "Konfime los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."]}}, {"name": "Pago en Línea – Tarjeta de Crédito Deuda Nacional", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Pagos y Avances”.", "Elige el tipo de pago en línea (Línea de Crédito / Tarjeta / Crédito de Consumo).", "Confirma los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Pagos y Avances”.", "Choose el tipo de pago en línea (Línea de Crédito / Card / Crédito de Consumo).", "Confirm los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Pagos y Avances”.", "Chwazi el tipo de pago en línea (Línea de Crédito / Tarjeta / Crédito de Consumo).", "Konfime los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."]}}, {"name": "Pago en Línea – Tarjeta de Crédito Deuda Internacional", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Pagos y Avances”.", "Elige el tipo de pago en línea (Línea de Crédito / Tarjeta / Crédito de Consumo).", "Confirma los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Pagos y Avances”.", "Choose el tipo de pago en línea (Línea de Crédito / Card / Crédito de Consumo).", "Confirm los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Pagos y Avances”.", "Chwazi el tipo de pago en línea (Línea de Crédito / Tarjeta / Crédito de Consumo).", "Konfime los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."]}}, {"name": "Pago en Línea – Crédito de Consumo", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Pagos y Avances”.", "Elige el tipo de pago en línea (Línea de Crédito / Tarjeta / Crédito de Consumo).", "Confirma los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Pagos y Avances”.", "Choose el tipo de pago en línea (Línea de Crédito / Card / Crédito de Consumo).", "Confirm los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Pagos y Avances”.", "Chwazi el tipo de pago en línea (Línea de Crédito / Tarjeta / Crédito de Consumo).", "Konfime los datos (monto, producto y autorización).", "Finaliza e imprime/guarda el comprobante."]}}, {"name": "Avance Tarjeta de Crédito (normal y cuotas) – Abono en Cuenta Corriente/Vista", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Pagos y Avances” o “Avances”.", "Elige el tipo de avance (normal/cuotas) y el producto asociado.", "Confirma monto y condiciones mostradas en pantalla.", "Finaliza e imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Pagos y Avances” o “Avances”.", "Choose el tipo de avance (normal/cuotas) y el producto asociado.", "Confirm monto y condiciones mostradas en pantalla.", "Finaliza e imprime/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Pagos y Avances” o “Avances”.", "Chwazi el tipo de avance (normal/cuotas) y el producto asociado.", "Konfime monto y condiciones mostradas en pantalla.", "Finaliza e imprime/guarda el comprobante."]}}, {"name": "Compra de Dólares con cargo a Cuenta Corriente y Retiro en Caja", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet (requisito obligatorio).", "Selecciona el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirma la operación.", "Imprime/guarda el comprobante."], "en": ["Enter con tu RUT y Internet password de Internet (requisito obligatorio).", "Select el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Confirm la operación.", "Print/guarda el comprobante."], "ht": ["Antre con tu RUT y Clave de Internet (requisito obligatorio).", "Chwazi el trámite en el menú del equipo.", "Completa los datos solicitados en pantalla.", "Konfime la operación.", "Enprime/guarda el comprobante."]}}, {"name": "Actualizar Teléfono Particular", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Actualizar datos”.", "Elige qué dato actualizar (teléfono/correo).", "Ingresa la información nueva y confirma.", "Guarda el comprobante de actualización."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Actualizar datos”.", "Choose qué dato actualizar (teléfono/correo).", "Enter la información nueva y confirma.", "Keep el comprobante de actualización."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Actualizar datos”.", "Chwazi qué dato actualizar (teléfono/correo).", "Antre la información nueva y confirma.", "Kenbe el comprobante de actualización."]}}, {"name": "Actualizar Teléfono Comercial", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Actualizar datos”.", "Elige qué dato actualizar (teléfono/correo).", "Ingresa la información nueva y confirma.", "Guarda el comprobante de actualización."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Actualizar datos”.", "Choose qué dato actualizar (teléfono/correo).", "Enter la información nueva y confirma.", "Keep el comprobante de actualización."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Actualizar datos”.", "Chwazi qué dato actualizar (teléfono/correo).", "Antre la información nueva y confirma.", "Kenbe el comprobante de actualización."]}}, {"name": "Actualizar Teléfono Celular", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Actualizar datos”.", "Elige qué dato actualizar (teléfono/correo).", "Ingresa la información nueva y confirma.", "Guarda el comprobante de actualización."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Actualizar datos”.", "Choose qué dato actualizar (teléfono/correo).", "Enter la información nueva y confirma.", "Keep el comprobante de actualización."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Actualizar datos”.", "Chwazi qué dato actualizar (teléfono/correo).", "Antre la información nueva y confirma.", "Kenbe el comprobante de actualización."]}}, {"name": "Actualización de Correo Electrónico", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona “Actualizar datos”.", "Elige qué dato actualizar (teléfono/correo).", "Ingresa la información nueva y confirma.", "Guarda el comprobante de actualización."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select “Actualizar datos”.", "Choose qué dato actualizar (teléfono/correo).", "Enter la información nueva y confirma.", "Keep el comprobante de actualización."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi “Actualizar datos”.", "Chwazi qué dato actualizar (teléfono/correo).", "Antre la información nueva y confirma.", "Kenbe el comprobante de actualización."]}}, {"name": "Reseteo Clave Internet", "channel": "ATI", "steps": {"es": ["Selecciona “Seguridad / Clave Internet”.", "Ingresa tu RUT y tu Clave de Internet (requisito obligatorio para operar).", "Elige “Solicitar”, “Reseteo” o “Desbloqueo”, según corresponda.", "Sigue las instrucciones en pantalla (validación, preguntas y/o biometría si aplica).", "Confirma y guarda el comprobante o mensaje de confirmación."], "en": ["Select “Seguridad / Internet password Internet”.", "Enter tu RUT y tu Internet password de Internet (requisito obligatorio para operar).", "Choose “Solicitar”, “Reseteo” o “Desbloqueo”, según corresponda.", "Follow las instrucciones en pantalla (validación, preguntas y/o biometría si aplica).", "Confirm y guarda el comprobante o mensaje de confirmación."], "ht": ["Chwazi “Seguridad / Clave Internet”.", "Antre tu RUT y tu Clave de Internet (requisito obligatorio para operar).", "Chwazi “Solicitar”, “Reseteo” o “Desbloqueo”, según corresponda.", "Swiv las instrucciones en pantalla (validación, preguntas y/o biometría si aplica).", "Konfime y guarda el comprobante o mensaje de confirmación."]}}, {"name": "Generación Nueva Clave Internet", "channel": "ATI", "steps": {"es": ["Selecciona “Seguridad / Clave Internet”.", "Ingresa tu RUT y tu Clave de Internet (requisito obligatorio para operar).", "Elige “Solicitar”, “Reseteo” o “Desbloqueo”, según corresponda.", "Sigue las instrucciones en pantalla (validación, preguntas y/o biometría si aplica).", "Confirma y guarda el comprobante o mensaje de confirmación."], "en": ["Select “Seguridad / Internet password Internet”.", "Enter tu RUT y tu Internet password de Internet (requisito obligatorio para operar).", "Choose “Solicitar”, “Reseteo” o “Desbloqueo”, según corresponda.", "Follow las instrucciones en pantalla (validación, preguntas y/o biometría si aplica).", "Confirm y guarda el comprobante o mensaje de confirmación."], "ht": ["Chwazi “Seguridad / Clave Internet”.", "Antre tu RUT y tu Clave de Internet (requisito obligatorio para operar).", "Chwazi “Solicitar”, “Reseteo” o “Desbloqueo”, según corresponda.", "Swiv las instrucciones en pantalla (validación, preguntas y/o biometría si aplica).", "Konfime y guarda el comprobante o mensaje de confirmación."]}}, {"name": "Bloqueo y Reemisión Tarjeta de Crédito", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Elige el trámite correspondiente.", "Sigue el paso a paso que muestra el equipo y confirma.", "Imprime/guarda el comprobante o el código de seguimiento (si aparece)."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Choose el trámite correspondiente.", "Follow el paso a paso que muestra el equipo y confirma.", "Print/guarda el comprobante o el código de seguimiento (si aparece)."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Chwazi el trámite correspondiente.", "Swiv el paso a paso que muestra el equipo y confirma.", "Enprime/guarda el comprobante o el código de seguimiento (si aparece)."]}}, {"name": "Solicitud Bloqueo y Reemisión Tarjeta de Débito (Call Back)", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Elige el trámite correspondiente.", "Sigue el paso a paso que muestra el equipo y confirma.", "Imprime/guarda el comprobante o el código de seguimiento (si aparece)."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Choose el trámite correspondiente.", "Follow el paso a paso que muestra el equipo y confirma.", "Print/guarda el comprobante o el código de seguimiento (si aparece)."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Chwazi el trámite correspondiente.", "Swiv el paso a paso que muestra el equipo y confirma.", "Enprime/guarda el comprobante o el código de seguimiento (si aparece)."]}}, {"name": "Reseteo de Pinpass Tarjeta de Débito", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Elige el trámite correspondiente.", "Sigue el paso a paso que muestra el equipo y confirma.", "Imprime/guarda el comprobante o el código de seguimiento (si aparece)."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Choose el trámite correspondiente.", "Follow el paso a paso que muestra el equipo y confirma.", "Print/guarda el comprobante o el código de seguimiento (si aparece)."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Chwazi el trámite correspondiente.", "Swiv el paso a paso que muestra el equipo y confirma.", "Enprime/guarda el comprobante o el código de seguimiento (si aparece)."]}}, {"name": "Consulta Vale Vista Pendiente Cobro", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Elige el trámite correspondiente.", "Sigue el paso a paso que muestra el equipo y confirma.", "Imprime/guarda el comprobante o el código de seguimiento (si aparece)."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Choose el trámite correspondiente.", "Follow el paso a paso que muestra el equipo y confirma.", "Print/guarda el comprobante o el código de seguimiento (si aparece)."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Chwazi el trámite correspondiente.", "Swiv el paso a paso que muestra el equipo y confirma.", "Enprime/guarda el comprobante o el código de seguimiento (si aparece)."]}}, {"name": "Consulta Estado Productos Pendiente de Retiro", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Elige el trámite correspondiente.", "Sigue el paso a paso que muestra el equipo y confirma.", "Imprime/guarda el comprobante o el código de seguimiento (si aparece)."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Choose el trámite correspondiente.", "Follow el paso a paso que muestra el equipo y confirma.", "Print/guarda el comprobante o el código de seguimiento (si aparece)."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Chwazi el trámite correspondiente.", "Swiv el paso a paso que muestra el equipo y confirma.", "Enprime/guarda el comprobante o el código de seguimiento (si aparece)."]}}, {"name": "Video Tutoriales de Aplicaciones Banco", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Elige el trámite correspondiente.", "Sigue el paso a paso que muestra el equipo y confirma.", "Imprime/guarda el comprobante o el código de seguimiento (si aparece)."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Choose el trámite correspondiente.", "Follow el paso a paso que muestra el equipo y confirma.", "Print/guarda el comprobante o el código de seguimiento (si aparece)."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Chwazi el trámite correspondiente.", "Swiv el paso a paso que muestra el equipo y confirma.", "Enprime/guarda el comprobante o el código de seguimiento (si aparece)."]}}, {"name": "Firma Electrónica Avanzada para Documentos", "channel": "ATI", "steps": {"es": ["Ingresa con tu RUT y Clave de Internet.", "Selecciona el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Elige el trámite correspondiente.", "Sigue el paso a paso que muestra el equipo y confirma.", "Imprime/guarda el comprobante o el código de seguimiento (si aparece)."], "en": ["Enter con tu RUT y Internet password de Internet.", "Select el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Choose el trámite correspondiente.", "Follow el paso a paso que muestra el equipo y confirma.", "Print/guarda el comprobante o el código de seguimiento (si aparece)."], "ht": ["Antre con tu RUT y Clave de Internet.", "Chwazi el menú “Seguridad cuenta” (o el menú indicado en pantalla).", "Chwazi el trámite correspondiente.", "Swiv el paso a paso que muestra el equipo y confirma.", "Enprime/guarda el comprobante o el código de seguimiento (si aparece)."]}}];
+const I18N = {"es": {"title": "Guía de Trámites – Sucursal", "subtitle": "Seleccione su idioma, active modo adulto mayor si lo necesita y elija el trámite.", "language": "Idioma", "senior": "Modo adulto mayor", "selectProcedure": "Trámite", "where": "Dónde hacerlo", "requirements": "Requisitos previos", "steps": "Paso a paso", "ati": "Consulta Rápida (ATI)", "ce": "Caja Express", "note": "Si el trámite que deseas realizar no se encuentra en este listado, debes dirigirte al tótem de tickets para obtener un turno y ser atendido por el personal del Banco de Chile.", "reqATI": "Para operar en Consulta Rápida (ATI) debes ingresar con RUT y Clave de Internet (obligatorio). Puedes cambiar idioma (Español/Inglés/Creole) y activar “Modo adulto mayor”.", "reqCE": "Para operar en Caja Express sigue la identificación que solicite el equipo (según operación: tarjeta/cédula/biometría).", "placeholder": "Selecciona un trámite…"}, "en": {"title": "Transactions Guide – Branch", "subtitle": "Choose your language, enable Senior Mode if needed, and select your transaction.", "language": "Language", "senior": "Senior Mode", "selectProcedure": "Transaction", "where": "Where to do it", "requirements": "Requirements", "steps": "Step by step", "ati": "Quick Service (ATI)", "ce": "Express Teller (Caja Express)", "note": "If your transaction is not listed, go to the ticket kiosk to get a number and be assisted by bank staff.", "reqATI": "To use ATI you must enter with your RUT and Internet password (required). You can change language (Spanish/English/Creole) and enable Senior Mode.", "reqCE": "To use Caja Express, follow the identification requested on screen (depending on the operation: card/ID/biometrics).", "placeholder": "Select a transaction…"}, "ht": {"title": "Gid Tranzaksyon – Ajans", "subtitle": "Chwazi lang ou, aktive Mòd Granmoun si ou bezwen, epi chwazi tranzaksyon an.", "language": "Lang", "senior": "Mòd Granmoun", "selectProcedure": "Tranzaksyon", "where": "Kote pou fè li", "requirements": "Kondisyon", "steps": "Etap pa etap", "ati": "Konsiltasyon Rapid (ATI)", "ce": "Kès Express (Caja Express)", "note": "Si tranzaksyon ou vle a pa nan lis la, ale nan tòtèm tikè a pou pran nimewo epi resevwa asistans nan men pèsonèl bank la.", "reqATI": "Pou sèvi ak ATI ou dwe antre ak RUT ou ak modpas Entènèt (obligatwa). Ou ka chanje lang (Panyòl/Angle/Creole) epi aktive Mòd Granmoun.", "reqCE": "Pou sèvi ak Caja Express, swiv idantifikasyon ekran an mande (selon operasyon an: kat/ID/byometrik).", "placeholder": "Chwazi yon tranzaksyon…"}};
+
+const $ = (id)=>document.getElementById(id);
+
+function setText(id, text) {
+  const el = $(id);
+  if (el) el.textContent = text;
+}
+
+function getLang() {
+  return $("lang").value || "es";
+}
+
+function channelLabel(ch, lang) {
+  if (ch === "ATI") return I18N[lang].ati;
+  return I18N[lang].ce;
+}
+
+function channelReq(ch, lang) {
+  if (ch === "ATI") return I18N[lang].reqATI;
+  return I18N[lang].reqCE;
+}
+
+function fillSelect(lang) {
+  const sel = $("proc");
+  const placeholder = I18N[lang].placeholder;
+  sel.innerHTML = "";
+  const opt0 = document.createElement("option");
+  opt0.value = "";
+  opt0.disabled = true;
+  opt0.selected = true;
+  opt0.textContent = placeholder;
+  sel.appendChild(opt0);
+
+  // Group by channel
+  const groupATI = document.createElement("optgroup");
+  groupATI.label = I18N[lang].ati;
+  const groupCE = document.createElement("optgroup");
+  groupCE.label = I18N[lang].ce;
+
+  DATA.forEach((p, idx) => {
+    const o = document.createElement("option");
+    o.value = String(idx);
+    o.textContent = p.name;
+    if (p.channel === "ATI") groupATI.appendChild(o);
+    else groupCE.appendChild(o);
+  });
+
+  sel.appendChild(groupATI);
+  sel.appendChild(groupCE);
+}
+
+function applyI18n(lang) {
+  setText("t_title", I18N[lang].title);
+  setText("t_subtitle", I18N[lang].subtitle);
+  setText("t_language", I18N[lang].language);
+  setText("t_selectProcedure", I18N[lang].selectProcedure);
+  setText("t_senior", I18N[lang].senior);
+  setText("t_wherePill", I18N[lang].where);
+  setText("t_stepsPill", I18N[lang].steps);
+  $("note").textContent = I18N[lang].note;
+  $("t_seniorLabel").textContent = (lang==="es") ? "Activar" : (lang==="en" ? "Enable" : "Aktive");
+}
+
+function render() {
+  const lang = getLang();
+  const idx = $("proc").value;
+  if (!idx) {
+    $("result").style.display = "none";
+    return;
+  }
+  const p = DATA[Number(idx)];
+  $("result").style.display = "block";
+
+  const where = channelLabel(p.channel, lang);
+  $("whereText").textContent = where;
+
+  const badge = $("whereBadge");
+  if (p.channel === "ATI") {
+    badge.className = "badge ati";
+    badge.textContent = "ATI";
+  } else {
+    badge.className = "badge ce";
+    badge.textContent = "CAJA EXPRESS";
+  }
+
+  $("reqText").textContent = channelReq(p.channel, lang);
+
+  const steps = (p.steps && p.steps[lang]) ? p.steps[lang] : (p.steps ? p.steps["es"] : []);
+  const ul = $("stepsList");
+  ul.innerHTML = "";
+  steps.forEach(s => {
+    const li = document.createElement("li");
+    li.textContent = s;
+    ul.appendChild(li);
+  });
+}
+
+function toggleSenior() {
+  document.body.classList.toggle("senior", $("senior").checked);
+}
+
+$("lang").addEventListener("change", () => {
+  const lang = getLang();
+  applyI18n(lang);
+  fillSelect(lang);
+  render();
+});
+
+$("proc").addEventListener("change", render);
+$("senior").addEventListener("change", toggleSenior);
+
+// Init
+applyI18n(getLang());
+fillSelect(getLang());
+toggleSenior();
+</script>
+</body>
+</html>
